@@ -1,0 +1,3 @@
+fmt:
+	bunx prettier -w .
+

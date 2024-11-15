@@ -1,0 +1,40 @@
+{
+  "name": "@jondotsoy/ondina-hub",
+  "description": "AM library. Store permissions, roles, and users ids",
+  "version": "0.1.0",
+  "type": "module",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "lib/esm/*.d.ts"
+      ]
+    }
+  },
+  "exports": {
+    "./hub": {
+      "import": "./lib/esm/hub/hub.js",
+      "default": "./lib/esm/hub/hub.js",
+      "types": "./lib/esm/hub/hub.d.ts"
+    },
+    "./hub-manifest": {
+      "import": "./lib/esm/hub-manifest/hub-manifest.js",
+      "default": "./lib/esm/hub-manifest/hub-manifest.js",
+      "types": "./lib/esm/hub-manifest/hub-manifest.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "echo dev"
+  },
+  "devDependencies": {
+    "zod": "^3.23.8",
+    "yaml": "^2.6.0",
+    "zod-to-json-schema": "^3.23.5",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@jondotsoy/utils-js": "^0.5.2"
+  }
+}
