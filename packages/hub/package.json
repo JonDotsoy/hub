@@ -36,5 +36,10 @@
   },
   "dependencies": {
     "@jondotsoy/utils-js": "^0.5.2"
-  }
+  },
+  "files": [
+    "lib",
+    "hub-manifest.schema.json",
+    "hub-manifest.schema.yaml"
+  ]
 }
