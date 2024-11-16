@@ -1,6 +1,10 @@
 import { get } from "@jondotsoy/utils-js/get";
 import type { ConditionDTO } from "../dtos/condition.dto.js";
 
+const split = (value: string, delimiter: string) => {
+  return value.split(delimiter);
+};
+
 const g = (...args: Parameters<typeof get>) => {
   const v = get(...args);
   if (typeof v === "string") return v;
@@ -15,7 +19,7 @@ export const evaluateCondition = (
 ): boolean => {
   if ("equal" in condition) {
     const [field, value] = condition.equal;
-    const fieldValue = get(context, ...field.split("."));
+    const fieldValue = get(context, ...split(field, "."));
     return fieldValue === value;
   }
   if ("or" in condition) {
@@ -37,28 +41,28 @@ export const evaluateCondition = (
 
   if ("greaterThan" in condition) {
     const [field, value] = condition.greaterThan;
-    const v = g(context, ...field.split("."));
+    const v = g(context, ...split(field, "."));
     if (v === null) return false;
     return v > value;
   }
 
   if ("lessThan" in condition) {
     const [field, value] = condition.lessThan;
-    const v = g(context, ...field.split("."));
+    const v = g(context, ...split(field, "."));
     if (v === null) return false;
     return v < value;
   }
 
   if ("greaterThanOrEqual" in condition) {
     const [field, value] = condition.greaterThanOrEqual;
-    const v = g(context, ...field.split("."));
+    const v = g(context, ...split(field, "."));
     if (v === null) return false;
     return v >= value;
   }
 
   if ("lessThanOrEqual" in condition) {
     const [field, value] = condition.lessThanOrEqual;
-    const v = g(context, ...field.split("."));
+    const v = g(context, ...split(field, "."));
     if (v === null) return false;
     return v <= value;
   }
