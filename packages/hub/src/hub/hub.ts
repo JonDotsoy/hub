@@ -11,7 +11,7 @@ export class Hub {
   /**
    *
    */
-  isAllowed(options: { userId: string; resource: any; action: string }) {
+  async isAllowed(options: { userId: string; resource?: any; action: string }) {
     const user = this.users.get(options.userId);
 
     for (const [roleName, roleOptions] of user?.roles ?? []) {
@@ -32,7 +32,7 @@ export class Hub {
     const role = this.roles.get(roleName);
     if (!role) return;
     role.permissions = Array.from(
-      new Set([...role.permissions, ...permissions]),
+      new Set([...(role.permissions ?? []), ...permissions]),
     );
   }
 
@@ -63,7 +63,7 @@ export class Hub {
   ) {
     // check all actions are created
     if (role)
-      for (const permission of role.permissions)
+      for (const permission of role.permissions ?? [])
         if (!this.actions.has(permission)) {
           throw new Error(`Permission ${permission} not found`);
         }
@@ -102,6 +102,32 @@ export class Hub {
           description: roleDescription,
           permissions: rolePermissions,
         });
+    }
+
+    for (const user of get.array(state, "users") ?? []) {
+      const userId = get.string(user, "id");
+      if (userId) {
+        const roles =
+          get
+            .array(user, "roles")
+            ?.map((role) => {
+              const roleId =
+                typeof role === "string" ? role : get.string(role, "role");
+              if (!roleId) return null;
+              const condition = get.record(role, "condition");
+              if (condition) {
+                return {
+                  role: roleId,
+                  condition,
+                } as DescribeUserRoleDTO;
+              } else {
+                return roleId;
+              }
+            })
+            .filter((e) => e !== null) ?? [];
+
+        await hub.createUser(userId, { roles });
+      }
     }
 
     return hub;
