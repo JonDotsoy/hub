@@ -222,3 +222,67 @@ describe("Hub error handling", () => {
     ).rejects.toThrowError();
   });
 });
+
+it("can check if a user is allowed to perform an action from manifest", async () => {
+  const manifest: HubManifest = {
+    permissions: ["users.list", "users.create", "users.delete"],
+    roles: [
+      { id: "rrhh", permissions: ["users.list", "users.create"] },
+      {
+        id: "admin",
+        permissions: ["users.list", "users.create", "users.delete"],
+      },
+    ],
+    users: [
+      { id: "bob", roles: ["rrhh"] },
+      { id: "alice", roles: ["admin"] },
+    ],
+  };
+
+  const hub = await Hub.from(manifest);
+
+  expect(
+    await hub.isAllowed({ userId: "bob", action: "users.list" }),
+  ).toBeTrue();
+});
+
+it("can check if a user is allowed to perform an action with a condition from manifest", async () => {
+  const manifest: HubManifest = {
+    permissions: ["users.list", "users.create", "users.delete"],
+    roles: [
+      { id: "rrhh", permissions: ["users.list", "users.create"] },
+      {
+        id: "admin",
+        permissions: ["users.list", "users.create", "users.delete"],
+      },
+    ],
+    users: [
+      { id: "bob", roles: ["rrhh"] },
+      {
+        id: "alice",
+        roles: [
+          {
+            role: "admin",
+            condition: {
+              equal: ["group.office", "NY"],
+            },
+          },
+        ],
+      },
+    ],
+  };
+
+  const hub = await Hub.from(manifest);
+
+  expect(
+    await hub.isAllowed({
+      userId: "alice",
+      resource: {
+        group: {
+          office: "NY",
+        },
+      },
+      action: "users.delete",
+    }),
+  ).toBeTrue();
+});
