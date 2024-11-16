@@ -1,6 +1,10 @@
 # Ondina
 
-Fine-grained access control
+Fine-grained access control. We are the AM on IAM.
+
+## Create a stateless HUB
+
+Import the `@jondotsoy/ondina-hub`
 
 **Sample:**
 
@@ -69,3 +73,5 @@ await hub.isAllowed({
   action: "users.delete",
 }); // => true
 ```
+
+Load plan
