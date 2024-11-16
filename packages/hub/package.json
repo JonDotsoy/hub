@@ -1,5 +1,5 @@
 {
-  "name": "@jondotsoy/ondina-hub",
+  "name": "@ondina/hub",
   "description": "AM library. Store permissions, roles, and users ids",
   "version": "0.1.0",
   "type": "module",
