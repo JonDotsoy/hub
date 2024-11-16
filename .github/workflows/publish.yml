@@ -6,7 +6,8 @@ on:
       - develop
 
 jobs:
-  lint:
+  check:
+    name: Check the code
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,5 +17,4 @@ jobs:
           path: |
             ~/.bun/install/cache
       - uses: oven-sh/setup-bun@v2
-      - run: bun install
       - run: make check
