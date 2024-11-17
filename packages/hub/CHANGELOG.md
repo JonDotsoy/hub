@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/JonDotsoy/ondina/compare/hub-v0.2.1...hub-v0.2.2) (2024-11-17)
+
+
+### Miscellaneous Chores
+
+* release 0.2.2 ([8de270d](https://github.com/JonDotsoy/ondina/commit/8de270dc6a808a662fab97612269b9de545c9581))
+
 ## [0.2.1](https://github.com/JonDotsoy/ondina/compare/hub-v0.2.0...hub-v0.2.1) (2024-11-17)
 
 
