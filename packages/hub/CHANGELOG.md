@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.4](https://github.com/JonDotsoy/ondina/compare/hub-v0.2.3...hub-v0.2.4) (2024-11-17)
+
+
+### Performance Improvements
+
+* export ts types ([9a9040d](https://github.com/JonDotsoy/ondina/commit/9a9040dff9037d2ea85d6546f8a47eacae7a1f62))
+
 ## [0.2.3](https://github.com/JonDotsoy/ondina/compare/hub-v0.2.2...hub-v0.2.3) (2024-11-17)
 
 
