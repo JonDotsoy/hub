@@ -10,20 +10,20 @@ describe("Hub", () => {
   it("can create a permission", async () => {
     const hub = new Hub();
 
-    await hub.createAction("foo");
+    await hub.createPermission("foo");
   });
 
   it("can create a role", async () => {
     const hub = new Hub();
 
-    await hub.createAction("foo");
+    await hub.createPermission("foo");
     await hub.createRole("taz", { permissions: ["foo"] });
   });
 
   it("can attach a permission to a role", async () => {
     const hub = new Hub();
 
-    await hub.createAction("foo");
+    await hub.createPermission("foo");
     await hub.createRole("taz");
     await hub.attachPermission("taz", ["foo"]);
   });
@@ -31,17 +31,17 @@ describe("Hub", () => {
   it("can create a user", async () => {
     const hub = new Hub();
 
-    await hub.createAction("foo");
+    await hub.createPermission("foo");
     await hub.createRole("taz", { permissions: ["foo"] });
-    await hub.createUser("biz", { roles: ["taz"] });
+    await hub.createPrincipal("biz", { roles: ["taz"] });
   });
 
   it("can create a user with a conditional role", async () => {
     const hub = new Hub();
 
-    await hub.createAction("foo");
+    await hub.createPermission("foo");
     await hub.createRole("taz", { permissions: ["foo"] });
-    await hub.createUser("biz", {
+    await hub.createPrincipal("biz", {
       roles: [
         {
           role: "taz",
@@ -56,13 +56,13 @@ describe("Hub", () => {
   it("can check if a user is allowed to perform an action", async () => {
     const hub = new Hub();
 
-    await hub.createAction("foo");
+    await hub.createPermission("foo");
     await hub.createRole("taz", { permissions: ["foo"] });
-    await hub.createUser("biz", { roles: ["taz"] });
+    await hub.createPrincipal("biz", { roles: ["taz"] });
 
     expect(
       await hub.isAllowed({
-        userId: "biz",
+        principalId: "biz",
         resource: { name: "lol" },
         action: "foo",
       }),
@@ -72,9 +72,9 @@ describe("Hub", () => {
   it("can check if a user is not allowed to perform an action", async () => {
     const hub = new Hub();
 
-    await hub.createAction("foo");
+    await hub.createPermission("foo");
     await hub.createRole("taz", { permissions: ["foo"] });
-    await hub.createUser("biz", {
+    await hub.createPrincipal("biz", {
       roles: [
         {
           role: "taz",
@@ -87,7 +87,7 @@ describe("Hub", () => {
 
     expect(
       await hub.isAllowed({
-        userId: "biz",
+        principalId: "biz",
         resource: { name: "zoom" },
         action: "foo",
       }),
@@ -97,9 +97,9 @@ describe("Hub", () => {
   it("can check if a user is not allowed to perform an action with empty resource", async () => {
     const hub = new Hub();
 
-    await hub.createAction("foo");
+    await hub.createPermission("foo");
     await hub.createRole("taz", { permissions: ["foo"] });
-    await hub.createUser("biz", {
+    await hub.createPrincipal("biz", {
       roles: [
         {
           role: "taz",
@@ -112,7 +112,7 @@ describe("Hub", () => {
 
     expect(
       await hub.isAllowed({
-        userId: "biz",
+        principalId: "biz",
         resource: {},
         action: "foo",
       }),
@@ -122,9 +122,9 @@ describe("Hub", () => {
   it("can check if a user is allowed to perform an action with a matching condition", async () => {
     const hub = new Hub();
 
-    await hub.createAction("foo");
+    await hub.createPermission("foo");
     await hub.createRole("taz", { permissions: ["foo"] });
-    await hub.createUser("biz", {
+    await hub.createPrincipal("biz", {
       roles: [
         {
           role: "taz",
@@ -137,7 +137,7 @@ describe("Hub", () => {
 
     expect(
       await hub.isAllowed({
-        userId: "biz",
+        principalId: "biz",
         resource: { name: "lol" },
         action: "foo",
       }),
@@ -147,9 +147,9 @@ describe("Hub", () => {
   it("can list roles", async () => {
     const hub = new Hub();
 
-    await hub.createAction("foo");
+    await hub.createPermission("foo");
     await hub.createRole("taz", { permissions: ["foo"] });
-    await hub.createUser("biz", {
+    await hub.createPrincipal("biz", {
       roles: [
         {
           role: "taz",
@@ -216,7 +216,7 @@ describe("Hub error handling", () => {
     const hub = new Hub();
 
     expect(
-      hub.createUser("taz", {
+      hub.createPrincipal("taz", {
         roles: ["foo"],
       }),
     ).rejects.toThrowError();
@@ -233,7 +233,7 @@ it("can check if a user is allowed to perform an action from manifest", async ()
         permissions: ["users.list", "users.create", "users.delete"],
       },
     ],
-    users: [
+    principals: [
       { id: "bob", roles: ["rrhh"] },
       { id: "alice", roles: ["admin"] },
     ],
@@ -242,7 +242,7 @@ it("can check if a user is allowed to perform an action from manifest", async ()
   const hub = await Hub.from(manifest);
 
   expect(
-    await hub.isAllowed({ userId: "bob", action: "users.list" }),
+    await hub.isAllowed({ principalId: "bob", action: "users.list" }),
   ).toBeTrue();
 });
 
@@ -256,7 +256,7 @@ it("can check if a user is allowed to perform an action with a condition from ma
         permissions: ["users.list", "users.create", "users.delete"],
       },
     ],
-    users: [
+    principals: [
       { id: "bob", roles: ["rrhh"] },
       {
         id: "alice",
@@ -276,7 +276,7 @@ it("can check if a user is allowed to perform an action with a condition from ma
 
   expect(
     await hub.isAllowed({
-      userId: "alice",
+      principalId: "alice",
       resource: {
         group: {
           office: "NY",

@@ -1,20 +1,21 @@
 import { get } from "@jondotsoy/utils-js/get";
 import { evaluateCondition } from "./condition/condition.js";
-import type { DescribeUserRoleDTO } from "./dtos/describe-user-role.dto.js";
+import type { DescribePrincipalWithRoleDTO } from "./dtos/describe-principal-with-role.dto.js";
 import type { RoleDTO } from "./dtos/role.dto.js";
+import type { IsAllowedOptionsDTO } from "./dtos/is-alloword-options.dto.js";
 
 export class Hub {
-  actions = new Set<string>();
+  permissions = new Set<string>();
   roles = new Map<string, RoleDTO>();
-  users = new Map<string, { roles: Map<string, true | DescribeUserRoleDTO> }>();
+  principals = new Map<string, { roles: Map<string, true | DescribePrincipalWithRoleDTO> }>();
 
   /**
    *
    */
-  async isAllowed(options: { userId: string; resource?: any; action: string }) {
-    const user = this.users.get(options.userId);
+  async isAllowed(options: IsAllowedOptionsDTO) {
+    const principal = this.principals.get(options.principalId);
 
-    for (const [roleName, roleOptions] of user?.roles ?? []) {
+    for (const [roleName, roleOptions] of principal?.roles ?? []) {
       const permissions = new Set(this.roles.get(roleName)?.permissions);
       if (permissions?.has(options.action)) {
         if (typeof roleOptions === "object") {
@@ -36,11 +37,11 @@ export class Hub {
     );
   }
 
-  async createUser(
-    userName: string,
-    options?: { roles?: DescribeUserRoleDTO[] },
+  async createPrincipal(
+    principalId: string,
+    options?: { roles?: DescribePrincipalWithRoleDTO[] },
   ) {
-    const roles = new Map<string, true | DescribeUserRoleDTO>(
+    const roles = new Map<string, true | DescribePrincipalWithRoleDTO>(
       options?.roles?.map((role) =>
         typeof role === "string"
           ? ([role, true] as const)
@@ -53,7 +54,7 @@ export class Hub {
         throw new Error(`Role ${roleName} not found`);
     }
 
-    this.users.set(userName, {
+    this.principals.set(principalId, {
       roles,
     });
   }
@@ -64,15 +65,15 @@ export class Hub {
     // check all actions are created
     if (role)
       for (const permission of role.permissions ?? [])
-        if (!this.actions.has(permission)) {
+        if (!this.permissions.has(permission)) {
           throw new Error(`Permission ${permission} not found`);
         }
 
     this.roles.set(roleId, { id: roleId, permissions: [], ...role });
   }
 
-  async createAction(permissionName: string) {
-    this.actions.add(permissionName);
+  async createPermission(permissionId: string) {
+    this.permissions.add(permissionId);
   }
 
   listRoles(): Iterable<RoleDTO> {
@@ -84,7 +85,7 @@ export class Hub {
 
     for (const permissionAlt of get.array(state, "permissions") ?? []) {
       const permission = get.string(permissionAlt);
-      if (permission) await hub.createAction(permission);
+      if (permission) await hub.createPermission(permission);
     }
 
     for (const roleAlt of get.array(state, "roles") ?? []) {
@@ -104,12 +105,12 @@ export class Hub {
         });
     }
 
-    for (const user of get.array(state, "users") ?? []) {
-      const userId = get.string(user, "id");
-      if (userId) {
+    for (const principal of get.array(state, "principals") ?? []) {
+      const principalId = get.string(principal, "id");
+      if (principalId) {
         const roles =
           get
-            .array(user, "roles")
+            .array(principal, "roles")
             ?.map((role) => {
               const roleId =
                 typeof role === "string" ? role : get.string(role, "role");
@@ -119,14 +120,14 @@ export class Hub {
                 return {
                   role: roleId,
                   condition,
-                } as DescribeUserRoleDTO;
+                } as DescribePrincipalWithRoleDTO;
               } else {
                 return roleId;
               }
             })
             .filter((e) => e !== null) ?? [];
 
-        await hub.createUser(userId, { roles });
+        await hub.createPrincipal(principalId, { roles });
       }
     }
 

@@ -1,6 +1,6 @@
 import type { ConditionDTO } from "./condition.dto.js";
 
-export type DescribeUserRoleDTO =
+export type DescribePrincipalWithRoleDTO =
   | string
   | {
       role: string;
