@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/JonDotsoy/ondina/compare/hub-v0.2.0...hub-v0.2.1) (2024-11-17)
+
+
+### Performance Improvements
+
+* format code ([f8b1723](https://github.com/JonDotsoy/ondina/commit/f8b1723ee49aa4bb750b32d91009f6f24085c5a6))
+
 ## [0.2.0](https://github.com/JonDotsoy/ondina/compare/hub-v0.1.0...hub-v0.2.0) (2024-11-17)
 
 
