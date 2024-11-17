@@ -23,7 +23,8 @@
     }
   },
   "scripts": {
-    "dev": "echo dev"
+    "dev": "echo dev",
+    "prepack": "make build"
   },
   "devDependencies": {
     "zod": "^3.23.8",
