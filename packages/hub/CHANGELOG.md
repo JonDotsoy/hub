@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.5](https://github.com/JonDotsoy/ondina/compare/hub-v0.2.4...hub-v0.2.5) (2024-11-17)
+
+
+### Bug Fixes
+
+* exports declaration ([2062ad8](https://github.com/JonDotsoy/ondina/commit/2062ad839456c7579bb05bdcfb560441804fbafd))
+
 ## [0.2.4](https://github.com/JonDotsoy/ondina/compare/hub-v0.2.3...hub-v0.2.4) (2024-11-17)
 
 
