@@ -4,6 +4,10 @@ import type { DescribePrincipalWithRoleDTO } from "./dtos/describe-principal-wit
 import type { RoleDTO } from "./dtos/role.dto.js";
 import type { IsAllowedOptionsDTO } from "./dtos/is-alloword-options.dto.js";
 
+export type { DescribePrincipalWithRoleDTO } from "./dtos/describe-principal-with-role.dto.js";
+export type { RoleDTO } from "./dtos/role.dto.js";
+export type { IsAllowedOptionsDTO } from "./dtos/is-alloword-options.dto.js";
+
 export class Hub {
   permissions = new Set<string>();
   roles = new Map<string, RoleDTO>();
