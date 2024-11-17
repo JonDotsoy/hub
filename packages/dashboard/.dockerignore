@@ -1,0 +1,9 @@
+node_modules
+dist
+.astro
+Makefile
+Dockerfile
+.dockerignore
+.docker-images
+.vscode
+.gitignore

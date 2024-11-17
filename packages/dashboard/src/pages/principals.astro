@@ -1,12 +1,12 @@
 ---
-import type { DescribeUserRoleDTO } from "../../../hub/src/hub/dtos/describe-user-role.dto";
+import type { DescribePrincipalWithRoleDTO } from "@ondina/hub/hub";
 import DefaultLayout from "../components/common/layaouts/default.astro";
 import MainNav from "../components/common/main-nav.astro";
 import { manifest } from "../sample-data/hub-manifest";
 
 export const prerender = false;
 
-const countRoles = (roles?: DescribeUserRoleDTO[]) => {
+const countRoles = (roles?: DescribePrincipalWithRoleDTO[]) => {
   let listPermissions = new Set<string>();
 
   roles?.forEach((describeUserRole) => {
@@ -52,7 +52,7 @@ const countRoles = (roles?: DescribeUserRoleDTO[]) => {
         <div class="head">Permissions</div>
 
         {
-          manifest.users
+          manifest.principals
             ?.sort((a, b) => (a.id > b.id ? 1 : -1))
             ?.map((user) => {
               return (

@@ -1,32 +1,9 @@
 ---
-import type { DescribeUserRoleDTO } from "../../../hub/src/hub/dtos/describe-user-role.dto";
 import DefaultLayout from "../components/common/layaouts/default.astro";
 import MainNav from "../components/common/main-nav.astro";
 import { manifest } from "../sample-data/hub-manifest";
 
 export const prerender = false;
-
-const countRoles = (roles?: DescribeUserRoleDTO[]) => {
-  let listPermissions = new Set<string>();
-
-  roles?.forEach((describeUserRole) => {
-    const role = manifest.roles?.find(
-      (r) =>
-        r.id ===
-        (typeof describeUserRole === "string"
-          ? describeUserRole
-          : describeUserRole.role),
-    );
-
-    if (role) {
-      role.permissions?.forEach((permission) =>
-        listPermissions.add(permission),
-      );
-    }
-  });
-
-  return listPermissions.size;
-};
 ---
 
 <style>

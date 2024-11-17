@@ -1,4 +1,4 @@
-import type { HubManifest } from "../../../hub/src/hub-manifest/hub-manifest-schema";
+import type { HubManifest } from "@ondina/hub/hub-manifest";
 
 export const manifest: HubManifest = {
   permissions: [
@@ -24,7 +24,7 @@ export const manifest: HubManifest = {
       permissions: ["users.list", "users.create", "users.delete"],
     },
   ],
-  users: [
+  principals: [
     { id: "bob", roles: ["rrhh"] },
     {
       id: "alice",

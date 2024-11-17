@@ -7,7 +7,7 @@ export const prerender = false;
 
 const roleId = Astro.params.roleId!;
 
-const selectRole = (roleId: string) => {
+const selectRole = async (roleId: string) => {
   const role = manifest.roles?.find((role) => role.id === roleId);
 
   if (!role) return null;

@@ -1,3 +1,5 @@
+.docker-images
+
 # build output
 dist/
 # generated types
