@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.6](https://github.com/JonDotsoy/ondina/compare/hub-v0.2.5...hub-v0.2.6) (2024-11-17)
+
+
+### Bug Fixes
+
+* describe step to build lib ([cc3f086](https://github.com/JonDotsoy/ondina/commit/cc3f08659e55b44be734e51cc9c8471a32379e4c))
+
 ## [0.2.5](https://github.com/JonDotsoy/ondina/compare/hub-v0.2.4...hub-v0.2.5) (2024-11-17)
 
 
