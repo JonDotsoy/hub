@@ -7,7 +7,10 @@ import type { IsAllowedOptionsDTO } from "./dtos/is-alloword-options.dto.js";
 export class Hub {
   permissions = new Set<string>();
   roles = new Map<string, RoleDTO>();
-  principals = new Map<string, { roles: Map<string, true | DescribePrincipalWithRoleDTO> }>();
+  principals = new Map<
+    string,
+    { roles: Map<string, true | DescribePrincipalWithRoleDTO> }
+  >();
 
   /**
    *
