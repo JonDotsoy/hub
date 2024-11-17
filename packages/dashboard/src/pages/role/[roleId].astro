@@ -1,40 +1,35 @@
 ---
-import type { GetStaticPaths } from "astro";
-import type { DescribeUserRoleDTO } from "../../../../hub/src/hub/dtos/describe-user-role.dto";
 import DefaultLayout from "../../components/common/layaouts/default.astro";
 import MainNav from "../../components/common/main-nav.astro";
-import { manifest } from "../../sample-data/hub-manifest";
-import type { RoleDTO } from "../../../../hub/src/hub/dtos/role.dto";
+import { manifest } from "../../sample-data/hub-manifest.js";
 
-type Props = {
-  roleId: string;
-  role: RoleDTO;
-  permissions: string[];
+export const prerender = false;
+
+const roleId = Astro.params.roleId!;
+
+const selectRole = (roleId: string) => {
+  const role = manifest.roles?.find((role) => role.id === roleId);
+
+  if (!role) return null;
+
+  const permissions = new Set<string>();
+
+  role.permissions?.forEach((p) => {
+    permissions.add(p);
+  });
+
+  return {
+    role: role,
+    permissions: Array.from(permissions),
+  };
 };
 
-export const getStaticPaths: GetStaticPaths = () => {
-  return (
-    manifest.roles?.map((role) => {
-      const permissions = new Set<string>();
+const roleDataFound = await selectRole(roleId);
 
-      role.permissions?.forEach((p) => {
-        permissions.add(p);
-      });
+if (!roleDataFound) return new Response(null, { status: 404 });
 
-      return {
-        params: { roleId: role.id },
-        props: {
-          roleId: role.id,
-          role: role,
-          permissions: Array.from(permissions),
-        } satisfies Props,
-      };
-    }) ?? []
-  );
-};
-
-const role = Astro.props.role;
-const permissions = Astro.props.permissions;
+const role = roleDataFound.role;
+const permissions = roleDataFound.permissions;
 ---
 
 <style>

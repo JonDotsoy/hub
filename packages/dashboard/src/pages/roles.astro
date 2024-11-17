@@ -4,6 +4,8 @@ import DefaultLayout from "../components/common/layaouts/default.astro";
 import MainNav from "../components/common/main-nav.astro";
 import { manifest } from "../sample-data/hub-manifest";
 
+export const prerender = false;
+
 const countRoles = (roles?: DescribeUserRoleDTO[]) => {
   let listPermissions = new Set<string>();
 

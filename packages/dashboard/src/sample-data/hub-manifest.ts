@@ -19,6 +19,8 @@ export const manifest: HubManifest = {
     { id: "rrhh", permissions: ["users.list", "users.create"] },
     {
       id: "admin",
+      title: "Administrator",
+      description: "Administrator role",
       permissions: ["users.list", "users.create", "users.delete"],
     },
   ],
