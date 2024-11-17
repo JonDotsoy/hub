@@ -2,7 +2,7 @@
 
 all: hub-manifest.schema.* lib
 
-build: hub-manifest.schema.*
+build: hub-manifest.schema.* lib
 
 clean:
 	rm -rf ./lib

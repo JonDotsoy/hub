@@ -17,9 +17,9 @@
       "types": "./lib/esm/hub/hub.d.ts"
     },
     "./hub-manifest": {
-      "import": "./lib/esm/hub-manifest/hub-manifest.js",
-      "default": "./lib/esm/hub-manifest/hub-manifest.js",
-      "types": "./lib/esm/hub-manifest/hub-manifest.d.ts"
+      "import": "./lib/esm/hub-manifest/hub-manifest-schema.js",
+      "default": "./lib/esm/hub-manifest/hub-manifest-schema.js",
+      "types": "./lib/esm/hub-manifest/hub-manifest-schema.d.ts"
     }
   },
   "scripts": {
