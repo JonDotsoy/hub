@@ -1,0 +1,73 @@
+---
+type Props = {
+  selected?: "principals" | "roles" | "permissions";
+};
+
+const selected = Astro.props.selected;
+---
+
+<style>
+  nav {
+    @apply flex;
+    & > a {
+      @apply grid
+      transition-all;
+      &:hover {
+        @apply text-sky-500/60
+        border-b-sky-500/30;
+      }
+
+      .border-decoration {
+        @apply w-full
+        h-1
+        bg-transparent
+        block;
+      }
+
+      &[x-selected] {
+        @apply text-sky-500
+        border-b-sky-500/60;
+
+        .border-decoration {
+          @apply w-full
+        h-1
+        bg-sky-500
+        block;
+        }
+      }
+
+      .nav-title {
+        @apply px-4
+        pt-4
+        pb-3;
+      }
+    }
+  }
+</style>
+
+<nav>
+  <a x-selected={selected === "principals"} href="/principals"
+    ><span class="nav-title">Principals</span>
+    <span
+      class="border-decoration"
+      transition:name={selected === "principals"
+        ? "main-nav-selected"
+        : "main-nav-principals"}></span></a
+  >
+  <a x-selected={selected === "roles"} href="/roles"
+    ><span class="nav-title">Roles</span>
+    <span
+      class="border-decoration"
+      transition:name={selected === "roles"
+        ? "main-nav-selected"
+        : "main-nav-roles"}></span></a
+  >
+  <a x-selected={selected === "permissions"} href="/permissions"
+    ><span class="nav-title">Permissions</span>
+    <span
+      class="border-decoration"
+      transition:name={selected === "permissions"
+        ? "main-nav-selected"
+        : "main-nav-permissions"}></span></a
+  >
+</nav>

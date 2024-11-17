@@ -1,0 +1,76 @@
+---
+import type { GetStaticPaths } from "astro";
+import type { DescribeUserRoleDTO } from "../../../../hub/src/hub/dtos/describe-user-role.dto";
+import DefaultLayout from "../../components/common/layaouts/default.astro";
+import MainNav from "../../components/common/main-nav.astro";
+import { manifest } from "../../sample-data/hub-manifest";
+import type { RoleDTO } from "../../../../hub/src/hub/dtos/role.dto";
+
+type Props = {
+  roleId: string;
+  role: RoleDTO;
+  permissions: string[];
+};
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return (
+    manifest.roles?.map((role) => {
+      const permissions = new Set<string>();
+
+      role.permissions?.forEach((p) => {
+        permissions.add(p);
+      });
+
+      return {
+        params: { roleId: role.id },
+        props: {
+          roleId: role.id,
+          role: role,
+          permissions: Array.from(permissions),
+        } satisfies Props,
+      };
+    }) ?? []
+  );
+};
+
+const role = Astro.props.role;
+const permissions = Astro.props.permissions;
+---
+
+<style>
+  .table-pricipals {
+    @apply grid
+    grid-cols-3;
+
+    .head {
+      @apply font-bold;
+    }
+  }
+</style>
+
+<DefaultLayout title="Principals">
+  <div class="px-2">
+    <div class="max-w-screen-md m-auto py-4">
+      <MainNav selected="roles" />
+    </div>
+    <div class="max-w-screen-md m-auto py-4">
+      <h2 class="text-xl font-bold">{role.title ?? role.id}</h2>
+      <dl class="grid grid-cols-[auto_1fr] gap-2">
+        <dt class="font-bold border-b">ID</dt>
+        <dd class="border-b">{role.id}</dd>
+        <dt class="font-bold border-b">Title</dt>
+        <dd class="border-b">{role.title}</dd>
+      </dl>
+      <h2 class="text-xl font-bold">Description</h2>
+      <p>
+        {role.description ?? <span class="text-black/40">No description</span>}
+      </p>
+      <h2 class="text-xl font-bold">
+        {permissions.length} assigned permissions
+      </h2>
+      <ul>
+        {permissions.map((permission) => <li>{permission}</li>)}
+      </ul>
+    </div>
+  </div>
+</DefaultLayout>

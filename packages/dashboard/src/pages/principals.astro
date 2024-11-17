@@ -1,0 +1,92 @@
+---
+import { undefined } from "astro:schema";
+import type { DescribeUserRoleDTO } from "../../../hub/src/hub/dtos/describe-user-role.dto";
+import DefaultLayout from "../components/common/layaouts/default.astro";
+import MainNav from "../components/common/main-nav.astro";
+import { manifest } from "../sample-data/hub-manifest";
+
+const countRoles = (roles?: DescribeUserRoleDTO[]) => {
+  let listPermissions = new Set<string>();
+
+  roles?.forEach((describeUserRole) => {
+    const role = manifest.roles?.find(
+      (r) =>
+        r.id ===
+        (typeof describeUserRole === "string"
+          ? describeUserRole
+          : describeUserRole.role),
+    );
+
+    if (role) {
+      role.permissions?.forEach((permission) =>
+        listPermissions.add(permission),
+      );
+    }
+  });
+
+  return listPermissions.size;
+};
+---
+
+<style>
+  .table-pricipals {
+    @apply grid
+    grid-cols-3;
+
+    .head {
+      @apply font-bold;
+    }
+  }
+</style>
+
+<DefaultLayout title="Principals">
+  <div class="px-2">
+    <div class="max-w-screen-md m-auto py-4">
+      <MainNav selected="principals" />
+    </div>
+    <div class="max-w-screen-md m-auto py-4">
+      <div class="table-pricipals">
+        <div class="head">ID</div>
+        <div class="head">Roles</div>
+        <div class="head">Permissions</div>
+
+        {
+          manifest.users
+            ?.sort((a, b) => (a.id > b.id ? 1 : -1))
+            ?.map((user) => {
+              return (
+                <>
+                  <div>{user.id}</div>
+                  <div>
+                    <ul>
+                      {user.roles?.map((role) => {
+                        const roleId =
+                          typeof role === "string"
+                            ? role
+                            : typeof role === "object"
+                              ? role.role
+                              : null;
+                        if (!roleId) return null;
+
+                        return (
+                          <li>
+                            <a
+                              href={`/role/${roleId}`}
+                              class="text-sky-500 hover:underline"
+                            >
+                              {roleId}
+                            </a>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                  <div>{countRoles(user.roles)} permissions</div>
+                </>
+              );
+            })
+        }
+      </div>
+    </div>
+  </div>
+</DefaultLayout>

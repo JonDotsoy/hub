@@ -1,0 +1,21 @@
+---
+import { ViewTransitions } from "astro:transitions";
+
+type Props = {
+  title: string;
+};
+
+const title = Astro.props.title;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <ViewTransitions />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

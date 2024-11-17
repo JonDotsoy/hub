@@ -1,0 +1,22 @@
+---
+import DefaultLayout from "../components/common/layaouts/default.astro";
+---
+
+<style>
+  .btn-access {
+    @apply transition-all
+    border p-4
+    border-gray-500/40
+    hover:border-gray-500/80
+    rounded
+    hover:shadow-md;
+  }
+</style>
+
+<DefaultLayout title="Ondina">
+  <div class="grid grid-cols-3 gap-4 max-w-screen-md m-auto py-4">
+    <a class="btn-access" href="/principals">Principals</a>
+    <a class="btn-access" href="/roles">Roles</a>
+    <a class="btn-access" href="/permissions">Permissions</a>
+  </div>
+</DefaultLayout>
