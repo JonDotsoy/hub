@@ -2,6 +2,10 @@ import { Router } from "artur";
 import { Hub } from "../hub/hub";
 import { settings } from "./settings";
 import * as YAML from "yaml";
+import {
+  DynamicContentResponse,
+  dynamicContentResponseMiddleware,
+} from "./utils/dynamic-content-response";
 
 const openapi = new URL("./openapi.yml", import.meta.url);
 
@@ -27,21 +31,28 @@ export const bootstrap = async () => {
     fetch: () => Response.json(settings.hubSchema),
   });
 
-  router.use('GET', '/openapi', {
+  router.use("GET", "/openapi", {
+    middlewares: [dynamicContentResponseMiddleware],
     fetch: async (req) => {
       const openapiPayload = YAML.parse(await Bun.file(openapi).text());
 
-      openapiPayload.servers = {
-        url: new URL(settings.base, req.url).toString()
-      }
+      openapiPayload.servers = [
+        {
+          url: new URL(settings.base, req.url).toString(),
+        },
+        ...(openapiPayload.servers ?? []),
+      ];
 
-      return new Response(YAML.stringify(openapiPayload), {
-        headers: {
-          'Content-Type': 'text/yaml'
-        }
-      })
-    }
-  })
+      return new DynamicContentResponse(openapiPayload);
+    },
+  });
+
+  router.use("GET", "/manifest", {
+    middlewares: [dynamicContentResponseMiddleware],
+    fetch: async (req) => {
+      return new DynamicContentResponse(hub.toJSON());
+    },
+  });
 
   return router;
 };

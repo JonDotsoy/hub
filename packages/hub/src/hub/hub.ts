@@ -3,6 +3,7 @@ import { evaluateCondition } from "./condition/condition.js";
 import type { DescribePrincipalWithRoleDTO } from "./dtos/describe-principal-with-role.dto.js";
 import type { RoleDTO } from "./dtos/role.dto.js";
 import type { IsAllowedOptionsDTO } from "./dtos/is-alloword-options.dto.js";
+import type { HubManifest } from "../hub-manifest/hub-manifest-schema.js";
 
 export type { DescribePrincipalWithRoleDTO } from "./dtos/describe-principal-with-role.dto.js";
 export type { RoleDTO } from "./dtos/role.dto.js";
@@ -85,6 +86,22 @@ export class Hub {
 
   listRoles(): Iterable<RoleDTO> {
     return this.roles.values();
+  }
+
+  toJSON(): unknown {
+    return {
+      permissions: Array.from(this.permissions),
+      roles: Array.from(this.roles.values()),
+      principals: Array.from(
+        this.principals.entries(),
+        ([principalId, principal]) => {
+          return {
+            id: principalId,
+            roles: Array.from(principal.roles.keys()),
+          };
+        },
+      ),
+    } as HubManifest;
   }
 
   static async from(state: unknown) {

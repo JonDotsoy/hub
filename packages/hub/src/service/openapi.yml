@@ -34,6 +34,15 @@ components:
           description: Action string
           example: "scope.read"
 
+    manifest:
+      $ref: ../../hub-manifest.schema.json
+
+    JsonOrYamlAcceptHeader:
+      type: string
+      enum:
+        - application/json
+        - application/yaml
+
 paths:
   "/":
     get:
@@ -43,11 +52,20 @@ paths:
           description: OK
   /openapi:
     get:
+      parameters:
+        - in: header
+          name: Accept
+          schema:
+            $ref: "#/components/schemas/JsonOrYamlAcceptHeader"
+          required: false
+          description: Accept header
+          example: application/yaml
       deprecated: false
       responses:
         default:
           description: OK
-  "/is-allowed":
+
+  /is-allowed:
     post:
       deprecated: false
       requestBody:
@@ -67,3 +85,20 @@ paths:
                   isAllowed:
                     type: boolean
                     example: true
+  /manifest:
+    get:
+      parameters:
+        - in: header
+          name: Accept
+          schema:
+            $ref: "#/components/schemas/JsonOrYamlAcceptHeader"
+          required: false
+          description: Accept header
+          example: application/yaml
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/manifest"
