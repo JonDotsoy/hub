@@ -37,11 +37,16 @@ components:
     manifest:
       $ref: ../../hub-manifest.schema.json
 
-    JsonOrYamlAcceptHeader:
+    AcceptHeader:
       type: string
       enum:
-        - application/json
-        - application/yaml
+       - application/yaml
+       - application/toml
+       - application/json
+       - application/xml
+       - text/html
+       - application/*
+       - '*/*'
 
 paths:
   "/":
@@ -56,7 +61,7 @@ paths:
         - in: header
           name: Accept
           schema:
-            $ref: "#/components/schemas/JsonOrYamlAcceptHeader"
+            $ref: "#/components/schemas/AcceptHeader"
           required: false
           description: Accept header
           example: application/yaml
@@ -91,7 +96,7 @@ paths:
         - in: header
           name: Accept
           schema:
-            $ref: "#/components/schemas/JsonOrYamlAcceptHeader"
+            $ref: "#/components/schemas/AcceptHeader"
           required: false
           description: Accept header
           example: application/yaml
