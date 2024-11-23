@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.3.0](https://github.com/JonDotsoy/ondina/compare/hub-v0.2.6...hub-v0.3.0) (2024-11-23)
+
+
+### Features
+
+* add support to render dynamic content ([f8a7d11](https://github.com/JonDotsoy/ondina/commit/f8a7d11ec56e9830c9514398d2f7faf0fe12fd93))
+* upgrade openapi def ([ebf9caa](https://github.com/JonDotsoy/ondina/commit/ebf9caac9b221699125a30dbc28192f12d01af33))
+
+
+### Performance Improvements
+
+* format code ([e1f0168](https://github.com/JonDotsoy/ondina/commit/e1f01688c43e06309aed06da6676bddd22904bf9))
+* format code ([2c1d1e7](https://github.com/JonDotsoy/ondina/commit/2c1d1e78648c0518f44219e46eea656018ec886a))
+* remove logs ([afe9704](https://github.com/JonDotsoy/ondina/commit/afe9704cc9f1094dc2e90276c836341ddd061179))
+
 ## [0.2.6](https://github.com/JonDotsoy/ondina/compare/hub-v0.2.5...hub-v0.2.6) (2024-11-17)
 
 
