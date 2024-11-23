@@ -29,21 +29,22 @@ export const bootstrap = async () => {
 
   router.use("GET", "/", {
     middlewares: [dynamicContentMiddleware],
-    fetch: (req) => new DynamicContentResponse({
-      uptimeMs: Math.floor(process.uptime()),
-      apis: router.routes
-        .map(route => {
-          const relativeUrl = new URL(route.urlPattern.pathname, req.url);
+    fetch: (req) =>
+      new DynamicContentResponse({
+        uptimeMs: Math.floor(process.uptime()),
+        apis: router.routes
+          .map((route) => {
+            const relativeUrl = new URL(route.urlPattern.pathname, req.url);
 
-          if (!route.urlPattern.test(relativeUrl)) return [];
+            if (!route.urlPattern.test(relativeUrl)) return [];
 
-          return {
-            method: route.method,
-            url: relativeUrl,
-          }
-        })
-        .flat()
-    }),
+            return {
+              method: route.method,
+              url: relativeUrl,
+            };
+          })
+          .flat(),
+      }),
   });
 
   router.use("GET", "/openapi", {

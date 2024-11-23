@@ -1,6 +1,12 @@
 {
   "$schema": "https://www.unpkg.com/@ondina/hub@latest/hub-manifest.schema.json",
-  "permissions": ["users.list", "users.create", "users.delete", "sales.read", "sales.write"],
+  "permissions": [
+    "users.list",
+    "users.create",
+    "users.delete",
+    "sales.read",
+    "sales.write"
+  ],
   "roles": [
     {
       "id": "rrhh",
