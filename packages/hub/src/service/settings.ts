@@ -1,13 +1,14 @@
 import { get } from "@jondotsoy/utils-js/get";
 
-const tryNumber = (value: unknown) => {
+const getStringNumber = (obj: unknown, ...paths: PropertyKey[]) => {
+  const value = get(obj, ...paths)
   if (typeof value === "number") return value;
-  if (typeof value === "string" && /^\d+$/.test(value)) return Number(value);
+  if (typeof value === "string" && /^\d+(\.\d+)?$/.test(value)) return Number(value);
   return null;
 };
 
-const loadHubSchema = async (): Promise<unknown> => {
-  const hubManifestLocation = get.string(process.env, "MANIFEST_LOCATION");
+const getHubSchema = async (obj: unknown, ...paths: PropertyKey[]): Promise<unknown> => {
+  const hubManifestLocation = get.string(obj, ...paths);
   if (hubManifestLocation) {
     const realFile = new URL(hubManifestLocation, `file:${process.cwd()}/`);
     if (await Bun.file(realFile).exists()) {
@@ -17,6 +18,7 @@ const loadHubSchema = async (): Promise<unknown> => {
 };
 
 export const settings = {
-  port: tryNumber(get(process.env, "PORT")) ?? 3000,
-  hubSchema: await loadHubSchema(),
+  port: getStringNumber(process.env, "PORT") ?? 3000,
+  base: get.string(process.env, "BASE") ?? "/",
+  hubSchema: await getHubSchema(process.env, 'MANIFEST_LOCATION'),
 };

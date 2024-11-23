@@ -41,6 +41,12 @@ paths:
       responses:
         default:
           description: OK
+  /openapi:
+    get:
+      deprecated: false
+      responses:
+        default:
+          description: OK
   "/is-allowed":
     post:
       deprecated: false
