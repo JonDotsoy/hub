@@ -23,7 +23,7 @@
     }
   },
   "scripts": {
-    "dev": "echo dev",
+    "dev": "bun --watch src/service/service.ts",
     "prepack": "make build"
   },
   "devDependencies": {
@@ -36,7 +36,8 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "@jondotsoy/utils-js": "^0.5.2"
+    "@jondotsoy/utils-js": "^0.5.2",
+    "artur": "^1.2.1"
   },
   "files": [
     "lib",

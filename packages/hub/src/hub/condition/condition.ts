@@ -13,6 +13,7 @@ const g = (...args: Parameters<typeof get>) => {
   return null;
 };
 
+/** @deprecated prefer "@jondotsoy/condition" module */
 export const evaluateCondition = (
   condition: ConditionDTO,
   context: unknown,

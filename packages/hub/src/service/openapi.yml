@@ -1,0 +1,63 @@
+openapi: "3.0.3"
+
+info:
+  title: Hub API Spec
+  version: "0.1.0"
+
+servers:
+  - url: http://localhost:3000
+
+components:
+  schemas:
+    check_payload:
+      type: object
+      required:
+        - principalId
+        - action
+      properties:
+        principalId:
+          type: string
+          description: Principal ID
+          example: my-account@my-namespace.example.com
+        resource:
+          type: object
+          description: Resource object
+          additionalProperties: true
+          example:
+            ref: storage-service/us/my-namespace/id-resource
+            object:
+              title: A photo
+              size: 200mb
+              type: image/png
+        action:
+          type: string
+          description: Action string
+          example: "scope.read"
+
+paths:
+  "/":
+    get:
+      deprecated: false
+      responses:
+        default:
+          description: OK
+  "/is-allowed":
+    post:
+      deprecated: false
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/check_payload"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isAllowed:
+                    type: boolean
+                    example: true

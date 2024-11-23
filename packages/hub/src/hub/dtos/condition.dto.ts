@@ -22,6 +22,7 @@ export namespace conditions {
   export type not = { not: ConditionDTO };
 }
 
+/** @deprecated prefer "@jondotsoy/condition" module */
 export type ConditionDTO =
   | conditions.equal
   | conditions.greaterThan

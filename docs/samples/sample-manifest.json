@@ -1,0 +1,31 @@
+{
+  "$schema": "https://www.unpkg.com/@ondina/hub@latest/hub-manifest.schema.json",
+  "permissions": ["users.list", "users.create", "users.delete"],
+  "roles": [
+    {
+      "id": "rrhh",
+      "permissions": ["users.list", "users.create"]
+    },
+    {
+      "id": "admin",
+      "permissions": ["users.list", "users.create", "users.delete"]
+    }
+  ],
+  "principals": [
+    {
+      "id": "bob",
+      "roles": ["rrhh"]
+    },
+    {
+      "id": "alice",
+      "roles": [
+        {
+          "role": "admin",
+          "condition": {
+            "equal": ["group.office", "NY"]
+          }
+        }
+      ]
+    }
+  ]
+}
