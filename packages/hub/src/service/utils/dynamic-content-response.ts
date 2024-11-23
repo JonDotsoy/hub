@@ -35,10 +35,7 @@ namespace xmlResponse {
     object: (payload: any) =>
       Array.from(Object.entries(payload), ([k, v]) => [
         {
-          ['prop']: [
-            { _attr: { key: k, type: toType(v) } },
-            ...resolve(v),
-          ],
+          ["prop"]: [{ _attr: { key: k, type: toType(v) } }, ...resolve(v)],
         },
       ]).flat(),
     array: (payload: any[]): any => [
@@ -69,8 +66,9 @@ const createFormatResponse: Record<string, (payload: any) => Response> = {
         "Content-Type": "application/toml",
       },
     }),
-    "text/html": (payload) =>
-      new Response(`
+  "text/html": (payload) =>
+    new Response(
+      `
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -82,13 +80,15 @@ const createFormatResponse: Record<string, (payload: any) => Response> = {
             <pre><code>${JSON.stringify(payload, null, 2)}</code></pre>
         </body>
         </html>
-      `, {
-      headers: {
-        "Content-Type": "text/html",
+      `,
+      {
+        headers: {
+          "Content-Type": "text/html",
+        },
       },
-    }),
+    ),
   "application/xml": (payload) =>
-    new Response(xml(xmlResponse.resolve({ doc: payload }), {   }), {
+    new Response(xml(xmlResponse.resolve({ doc: payload }), {}), {
       headers: {
         "Content-Type": "application/xml",
       },
