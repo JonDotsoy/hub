@@ -106,7 +106,7 @@ createFormatResponse["application/*"] =
 createFormatResponse["text/*"] = createFormatResponse["application/*"];
 createFormatResponse["*/*"] = createFormatResponse["application/*"];
 
-export const dynamicContentResponseMiddleware: Middleware<any> = (fetch) => {
+export const dynamicContentMiddleware: Middleware<any> = (fetch) => {
   return async (req) => {
     const accepts = parseAccepts(req);
 

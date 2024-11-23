@@ -23,6 +23,6 @@ for (const route of router.routes) {
   console.log(
     `Listen`,
     route.method,
-    `${route.urlPattern.protocol}://${route.urlPattern.username}:${route.urlPattern.password}@${route.urlPattern.hostname}${route.urlPattern.pathname}?${route.urlPattern.search}`.toString(),
+    `${route.urlPattern.protocol}://${route.urlPattern.username}:${route.urlPattern.password}@${route.urlPattern.hostname}:${route.urlPattern.port}${route.urlPattern.pathname}?${route.urlPattern.search}`.toString(),
   );
 }

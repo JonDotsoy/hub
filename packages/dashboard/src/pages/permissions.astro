@@ -1,9 +1,11 @@
 ---
 import DefaultLayout from "../components/common/layaouts/default.astro";
 import MainNav from "../components/common/main-nav.astro";
-import { manifest } from "../sample-data/hub-manifest";
+import { loadHubManifest } from "../sample-data/hub-manifest";
 
 export const prerender = false;
+
+const manifest = await loadHubManifest()
 ---
 
 <style></style>
