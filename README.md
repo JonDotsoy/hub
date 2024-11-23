@@ -6,6 +6,8 @@ Fine-grained access control. We are the AM on IAM.
 
 ![diagrama access to resource with ondina](./docs/assets/excalidraw/access-to-resource-with-ondina.png)
 
+![](./docs/assets/excalidraw/ecosistem-diagram.png)
+
 ## Create a stateless HUB
 
 Import the `@ondina/hub`
@@ -44,7 +46,7 @@ const manifest: HubManifest = {
 const hub = await Hub.from(manifest);
 
 await hub.isAllowed({
-  userId: "alice",
+  principalId: "alice",
   resource: {
     group: {
       office: "NY",
