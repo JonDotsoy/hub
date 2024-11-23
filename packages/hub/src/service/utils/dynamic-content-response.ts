@@ -22,8 +22,6 @@ const parseAccepts = (req: Request) => {
       return { mediaType, qFactor };
     }) ?? [];
 
-  console.log(acceptsHeader)
-
   return acceptsHeader.filter((e) => contentTypeAbles.has(e.mediaType));
 };
 
