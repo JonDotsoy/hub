@@ -2,6 +2,10 @@ name: Check Code
 
 on: push
 
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.ref_name }}-check
+
 jobs:
   check:
     name: Check the code
