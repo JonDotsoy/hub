@@ -40,13 +40,13 @@ components:
     AcceptHeader:
       type: string
       enum:
-       - application/yaml
-       - application/toml
-       - application/json
-       - application/xml
-       - text/html
-       - application/*
-       - '*/*'
+        - application/yaml
+        - application/toml
+        - application/json
+        - application/xml
+        - text/html
+        - application/*
+        - "*/*"
 
 paths:
   "/":

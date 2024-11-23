@@ -75,9 +75,14 @@ const createFormatResponse: Record<string, (payload: any) => Response> = {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Payload</title>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+            <script>hljs.highlightAll();</script>
         </head>
         <body>
-            <pre><code>${JSON.stringify(payload, null, 2)}</code></pre>
+            <h2>Payload</h2>
+            <pre><code class="language-yaml">${YAML.stringify(payload)}</code></pre>
         </body>
         </html>
       `,
