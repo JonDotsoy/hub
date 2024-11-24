@@ -17,7 +17,9 @@ export const server = Bun.serve({
   },
 });
 
-console.log(`Server is ready on ${new URL(settings.base, settings.site ?? server.url)}`);
+console.log(
+  `Server is ready on ${new URL(settings.base, settings.site ?? server.url)}`,
+);
 
 for (const route of router.routes) {
   console.log(
