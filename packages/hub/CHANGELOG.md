@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.1](https://github.com/JonDotsoy/ondina/compare/hub-v0.3.0...hub-v0.3.1) (2024-11-24)
+
+
+### Bug Fixes
+
+* describe the base url ([fd8bf21](https://github.com/JonDotsoy/ondina/commit/fd8bf2181b910e9514b5d8e99a7f7fcae7c1dfc5))
+
+
+### Performance Improvements
+
+* format code ([723fc08](https://github.com/JonDotsoy/ondina/commit/723fc087519945c9036ed2b49b88005d25d887d6))
+
 ## [0.3.0](https://github.com/JonDotsoy/ondina/compare/hub-v0.2.6...hub-v0.3.0) (2024-11-23)
 
 
