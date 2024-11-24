@@ -54,7 +54,7 @@ export const bootstrap = async () => {
 
       openapiPayload.servers = [
         {
-          url: new URL(settings.base, req.url).toString(),
+          url: new URL(settings.base, settings.site ?? req.url).toString(),
         },
         ...(openapiPayload.servers ?? []),
       ];

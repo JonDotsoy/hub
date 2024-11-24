@@ -24,5 +24,6 @@ const getHubSchema = async (
 export const settings = {
   port: getStringNumber(process.env, "PORT") ?? 3000,
   base: get.string(process.env, "BASE") ?? "/",
+  site: get.string(process.env,'SITE'),
   hubSchema: await getHubSchema(process.env, "MANIFEST_LOCATION"),
 };
