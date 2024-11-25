@@ -36,6 +36,7 @@ jobs:
     needs:
       - release-please
     if: needs.release-please.outputs.hub--release_created
+    secrets: inherit
     with:
       working-directory: packages/hub
 
@@ -44,6 +45,7 @@ jobs:
     needs:
       - release-please
     if: needs.release-please.outputs.dashboard--release_created
+    secrets: inherit
     with:
       working-directory: packages/dashboard
 
@@ -52,5 +54,6 @@ jobs:
     needs:
       - release-please
     if: needs.release-please.outputs.client--release_created
+    secrets: inherit
     with:
       working-directory: packages/client
