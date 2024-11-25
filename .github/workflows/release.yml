@@ -11,6 +11,8 @@ jobs:
 
   release-please:
     runs-on: ubuntu-latest
+    needs:
+      - check
     permissions:
       contents: write
       pull-requests: write
