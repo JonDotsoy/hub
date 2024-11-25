@@ -32,7 +32,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   delivery-hub:
-    name: Delivery Hub ${{ needs.release-please.outputs.hub--tag_name }}
+    name: Delivery ${{ needs.release-please.outputs.hub--tag_name }}
     runs-on: ubuntu-latest
     needs:
       - release-please
@@ -57,7 +57,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   delivery-dashboard:
-    name: Delivery Dashboard ${{ needs.release-please.outputs.dashboard--tag_name }}
+    name: Delivery ${{ needs.release-please.outputs.dashboard--tag_name }}
     runs-on: ubuntu-latest
     needs:
       - release-please
@@ -82,7 +82,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   delivery-client:
-    name: Delivery client ${{ needs.release-please.outputs.client--tag_name }}
+    name: Delivery ${{ needs.release-please.outputs.client--tag_name }}
     runs-on: ubuntu-latest
     needs:
       - release-please
