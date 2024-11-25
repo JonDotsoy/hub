@@ -14,7 +14,12 @@
     },
     {
       "id": "admin",
-      "permissions": ["users.list", "users.create", "users.delete", "sales.read"]
+      "permissions": [
+        "users.list",
+        "users.create",
+        "users.delete",
+        "sales.read"
+      ]
     },
     {
       "id": "vendor",
