@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/JonDotsoy/ondina/compare/client-v0.3.0...client-v0.4.0) (2024-11-25)
+
+
+### Features
+
+* configure script ([8d266ad](https://github.com/JonDotsoy/ondina/commit/8d266ad31129744eca45cad738bc7e58ecc1d11d))
+
 ## [0.3.0](https://github.com/JonDotsoy/ondina/compare/client-v0.2.3...client-v0.3.0) (2024-11-25)
 
 
