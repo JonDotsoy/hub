@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/JonDotsoy/ondina/compare/client-v0.2.3...client-v0.3.0) (2024-11-25)
+
+
+### Features
+
+* initialize scripts ([259e5dc](https://github.com/JonDotsoy/ondina/commit/259e5dca5e8c110f3add69d1e58648197ae9b43c))
+
 ## [0.2.3](https://github.com/JonDotsoy/ondina/compare/client-v0.2.3...client-v0.2.3) (2024-11-25)
 
 

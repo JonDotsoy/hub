@@ -1,5 +1,5 @@
 {
   "packages/hub": "0.3.2",
   "packages/dashboard": "0.2.3",
-  "packages/client": "0.2.3"
+  "packages/client": "0.3.0"
 }
