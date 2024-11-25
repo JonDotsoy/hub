@@ -6,6 +6,9 @@ on:
       - develop
 
 jobs:
+  check:
+    uses: ./.github/workflows/check.yml
+
   release-please:
     runs-on: ubuntu-latest
     permissions:
