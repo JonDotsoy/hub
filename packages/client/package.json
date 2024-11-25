@@ -1,3 +1,4 @@
 {
-  "name": "@ondina/client"
+  "name": "@ondina/client",
+  "version": "0.2.3"
 }
