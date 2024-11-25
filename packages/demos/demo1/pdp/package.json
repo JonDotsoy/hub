@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@ondina/hub": "0.3.1",
+    "yaml": "^2.6.0"
+  }
+}

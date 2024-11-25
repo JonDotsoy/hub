@@ -1,0 +1,31 @@
+services:
+  pdp:
+    build:
+      context: ./pdp/
+    volumes:
+      - type: bind
+        source: ./polices.json
+        target: /usr/share/ondina/polices.json
+    environment:
+      MANIFEST_LOCATION: /usr/share/ondina/polices.json
+      SITE: http://localhost:9001
+    ports:
+      - 9001:3000
+    mem_limit: 15m
+  pdp-dashboard:
+    build:
+      context: ./pdp-dashboard/
+    ports:
+      - 9002:4321
+    mem_limit: 500m
+    environment:
+      HUB_URL: http://pdp:3000
+    depends_on:
+      - pdp
+  app:
+    build:
+      context: ./app/
+    ports:
+      - 9000:3000
+    depends_on:
+      - pdp

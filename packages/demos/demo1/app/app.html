@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sample App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style type="text/tailwindcss">
+    @layer utilities {
+      body {
+        @apply p-4;
+      }
+
+      h2 {
+        @apply font-bold text-xl
+      }
+
+      #sign-form {
+        @apply flex flex-row items-center gap-2;
+
+        input {
+          @apply border px-2 py-1
+        }
+
+        button {
+          @apply border rounded py-1 px-2 bg-slate-100
+        }
+      }
+
+      #services-form {
+      }
+
+      button {
+        @apply px-2 py-1 border rounded;
+      }
+
+      calling-service {
+        @apply flex flex-col gap-2;
+      }
+
+      pre {
+        @apply bg-gray-200 w-full border rounded overflow-auto p-2;
+
+        & > code {
+
+        }
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+  <!-- <app-comp></app-comp> -->
+
+  <!-- <section>
+    <h2>Authorization</h2>
+    <form id="sign-form">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" list="users" placeholder="username" />
+      <button type="submit">Change Login</button>
+    </form>
+  </section> -->
+
+  <section>
+    <h2>Panel Bob</h2>
+    <form id="services-form">
+      <calling-service data-principal-id="bob" data-api="/api/sales">
+        <div><button type="button" x-def-name="call-code-fetch">List Sales</button></div>
+        <pre><code x-def-name="code-fetch"></code></pre>
+        <pre><code x-def-name="res"></code></pre>
+      </calling-service>
+    </form>
+  </section>
+  <section>
+    <h2>Panel Alice</h2>
+    <form id="services-form">
+      <calling-service data-principal-id="alice" data-api="/api/sales">
+        <div><button type="button" x-def-name="call-code-fetch">List Sales</button></div>
+        <pre><code x-def-name="code-fetch"></code></pre>
+        <pre><code x-def-name="res"></code></pre>
+      </calling-service>
+    </form>
+  </section>
+
+  <section>
+    <h2>Panel Carl</h2>
+    <form id="services-form">
+      <calling-service data-principal-id="carl" data-api="/api/sales">
+        <div><button type="button" x-def-name="call-code-fetch">List Sales</button></div>
+        <pre><code x-def-name="code-fetch"></code></pre>
+        <pre><code x-def-name="res"></code></pre>
+      </calling-service>
+    </form>
+  </section>
+
+
+  <datalist id="users">
+    <option value="alice"></option>
+    <option value="bob"></option>
+    <option value="carl"></option>
+  </datalist>
+
+  <p>
+    Open <a href="http://localhost:9002/">dashboard</a>
+  </p>
+
+  <script type="module">
+    class CallingService extends HTMLElement {
+      connectedCallback() {
+        const principalId = this.dataset.principalId;
+        const api = this.dataset.api;
+        const codeFetch = this.querySelector('[x-def-name="code-fetch"]');
+        const codeRes = this.querySelector('[x-def-name="res"]');
+        const callCodeFetch = this.querySelector('[x-def-name="call-code-fetch"]')
+
+        const fetchFn = async () => {
+          const res = await fetch(new URL(api, location.href), {
+            headers: {
+              Authorization: `Basic ${btoa(`${principalId}`)}`
+            }
+          })
+
+          const body = res.status===200 ? await res.json() : null;
+
+          codeRes.textContent = `# ${res.statusText} ${res.status}\n\n${JSON.stringify(body, null, 2)}`
+        }
+
+        codeFetch.textContent = `fetch(${JSON.stringify(new URL(api, location.href))}, {\n` +
+          `  headers: {\n` +
+          `    Authorization: \`Bearer ${btoa(`${principalId}`)}\`, // ${JSON.stringify(`${principalId}`)}\n` +
+          `  }\n` +
+          `})`
+
+        callCodeFetch.addEventListener("click", () => { fetchFn() })
+      }
+    }
+
+    customElements.define('calling-service', CallingService);
+  </script>
+</body>
+
+</html>
