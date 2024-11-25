@@ -3,26 +3,36 @@ name: Delivery NPM package
 on:
   workflow_call:
     inputs:
-      tag_version:
-        type: string
-        required: true
-      name:
-        type: string
-        required: true
       working-directory:
         type: string
         required: true
 
 jobs:
+  info:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    outputs:
+      pkg_name: ${{ steps.pkg_info.outputs.pkg_name }}
+      pkg_version: ${{ steps.pkg_info.outputs.pkg_version }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: pkg_info
+        run: |
+          cat package.json | jq '"pkg_name=" + .name + "\npkg_version=" + .version' -r > "$GITHUB_OUTPUT"
+
   delivery:
-    name: Delivery ${{ inputs.tag_version }}
+    needs:
+      - info
+    name: Delivery ${{ needs.info.outputs.pkg_name }}@${{ needs.info.outputs.pkg_version }}
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ${{ inputs.working-directory }}
     environment:
-      name: npm/${{ inputs.name }}
-      url: https://www.npmjs.com/package/${{ steps.pkg_info.outputs.pkg_name }}/v/${{ steps.pkg_info.outputs.pkg_version }}
+      name: npm/${{ needs.info.outputs.pkg_name }}
+      url: https://www.npmjs.com/package/${{ needs.info.outputs.pkg_name }}/v/${{ needs.info.outputs.pkg_version }}
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
@@ -38,6 +48,3 @@ jobs:
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - id: pkg_info
-        run: |
-          cat package.json | jq '"pkg_name=" + .name + "\npkg_version=" + .version' -r > "$GITHUB_OUTPUT"

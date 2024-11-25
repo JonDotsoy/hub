@@ -37,7 +37,6 @@ jobs:
       - release-please
     if: needs.release-please.outputs.hub--release_created
     with:
-      name: ${{ needs.release-please.outputs.hub--tag_name }}
       working-directory: packages/hub
 
   delivery-dashboard:
@@ -46,7 +45,6 @@ jobs:
       - release-please
     if: needs.release-please.outputs.dashboard--release_created
     with:
-      name: ${{ needs.release-please.outputs.dashboard--tag_name }}
       working-directory: packages/dashboard
 
   delivery-client:
@@ -55,5 +53,4 @@ jobs:
       - release-please
     if: needs.release-please.outputs.client--release_created
     with:
-      name: ${{ needs.release-please.outputs.client--tag_name }}
       working-directory: packages/client
