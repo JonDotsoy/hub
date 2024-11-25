@@ -19,6 +19,7 @@ jobs:
     outputs:
       release_created: ${{ steps.release-please.outputs.release_created }}
       hub--release_created: ${{ steps.release-please.outputs['packages/hub--release_created'] }}
+      dashboard--release_created: ${{ steps.release-please.outputs['packages/dashboard--release_created'] }}
     steps:
       - name: release
         id: release-please
@@ -38,6 +39,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
+      - uses: actions/cache@v4
+        with:
+          key: "${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}"
+          path: |
+            ~/.bun/install/cache
+      - uses: actions/setup-node@v4
+        with:
+          registry-url: "https://registry.npmjs.org"
+      - run: bun install
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  delivery-dashboard:
+    name: Delivery Hub
+    runs-on: ubuntu-latest
+    needs:
+      - release-please
+    if: needs.release-please.outputs.dashboard--release_created
+    defaults:
+      run:
+        working-directory: packages/dashboard
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - uses: actions/cache@v4
+        with:
+          key: "${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}"
+          path: |
+            ~/.bun/install/cache
       - uses: actions/setup-node@v4
         with:
           registry-url: "https://registry.npmjs.org"
