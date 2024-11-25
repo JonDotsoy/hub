@@ -2,7 +2,7 @@
   "name": "@ondina/dashboard",
   "description": "",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.2.3",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
