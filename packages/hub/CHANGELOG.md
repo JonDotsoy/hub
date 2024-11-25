@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/JonDotsoy/ondina/compare/hub-v0.3.1...hub-v0.3.2) (2024-11-25)
+
+
+### Performance Improvements
+
+* add support to site environment ([040f423](https://github.com/JonDotsoy/ondina/commit/040f4234a859af7e47c10e57bf65b0d24da09f79))
+
 ## [0.3.1](https://github.com/JonDotsoy/ondina/compare/hub-v0.3.0...hub-v0.3.1) (2024-11-24)
 
 
