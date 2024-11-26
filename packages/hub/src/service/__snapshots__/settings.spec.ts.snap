@@ -1,0 +1,103 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`loadSettings loads settings from a YAML manifest 1`] = `
+{
+  "permissions": [
+    "users.list",
+    "users.create",
+    "users.delete",
+    "sales.read",
+    "sales.write",
+  ],
+  "principals": [
+    {
+      "id": "bob",
+      "roles": [
+        "rrhh",
+      ],
+    },
+    {
+      "id": "alice",
+      "roles": [
+        {
+          "condition": {
+            "equal": [
+              "group.office",
+              "NY",
+            ],
+          },
+          "role": "admin",
+        },
+      ],
+    },
+  ],
+  "roles": [
+    {
+      "id": "rrhh",
+      "permissions": [
+        "users.list",
+        "users.create",
+      ],
+    },
+    {
+      "id": "admin",
+      "permissions": [
+        "users.list",
+        "users.create",
+        "users.delete",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`loadSettings loads settings from a JSON manifest 1`] = `
+{
+  "permissions": [
+    "users.list",
+    "users.create",
+    "users.delete",
+    "sales.read",
+    "sales.write",
+  ],
+  "principals": [
+    {
+      "id": "bob",
+      "roles": [
+        "rrhh",
+      ],
+    },
+    {
+      "id": "alice",
+      "roles": [
+        {
+          "condition": {
+            "equal": [
+              "group.office",
+              "NY",
+            ],
+          },
+          "role": "admin",
+        },
+      ],
+    },
+  ],
+  "roles": [
+    {
+      "id": "rrhh",
+      "permissions": [
+        "users.list",
+        "users.create",
+      ],
+    },
+    {
+      "id": "admin",
+      "permissions": [
+        "users.list",
+        "users.create",
+        "users.delete",
+      ],
+    },
+  ],
+}
+`;

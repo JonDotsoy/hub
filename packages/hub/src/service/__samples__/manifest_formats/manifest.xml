@@ -1,0 +1,30 @@
+<permissions>users.list</permissions>
+<permissions>users.create</permissions>
+<permissions>users.delete</permissions>
+<permissions>sales.read</permissions>
+<permissions>sales.write</permissions>
+<roles>
+  <id>rrhh</id>
+  <permissions>users.list</permissions>
+  <permissions>users.create</permissions>
+</roles>
+<roles>
+  <id>admin</id>
+  <permissions>users.list</permissions>
+  <permissions>users.create</permissions>
+  <permissions>users.delete</permissions>
+</roles>
+<principals>
+  <id>bob</id>
+  <roles>rrhh</roles>
+</principals>
+<principals>
+  <id>alice</id>
+  <roles>
+    <role>admin</role>
+    <condition>
+      <equal>group.office</equal>
+      <equal>NY</equal>
+    </condition>
+  </roles>
+</principals>

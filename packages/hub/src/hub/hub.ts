@@ -1,5 +1,5 @@
 import { get } from "@jondotsoy/utils-js/get";
-import { evaluateCondition } from "./condition/condition.js";
+import { evaluateCondition } from "@jondotsoy/condition";
 import type { DescribePrincipalWithRoleDTO } from "./dtos/describe-principal-with-role.dto.js";
 import type { RoleDTO } from "./dtos/role.dto.js";
 import type { IsAllowedOptionsDTO } from "./dtos/is-alloword-options.dto.js";
