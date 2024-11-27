@@ -1,3 +1,7 @@
 {
-  "recommendations": ["42crunch.vscode-openapi"]
+  "recommendations": [
+    "42crunch.vscode-openapi",
+    "github.vscode-github-actions",
+    "ms-azuretools.vscode-docker"
+  ]
 }
