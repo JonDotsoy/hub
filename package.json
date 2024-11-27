@@ -1,6 +1,9 @@
 {
   "name": "ondina",
   "private": true,
+  "scripts": {
+    "preinstall": "git config core.hooksPath .githooks"
+  },
   "workspaces": [
     "packages/*"
   ],
