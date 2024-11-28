@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/JonDotsoy/ondina/compare/client-v0.4.0...client-v0.5.0) (2024-11-28)
+
+
+### Features
+
+* add support to http agent ([3179924](https://github.com/JonDotsoy/ondina/commit/31799243c03aab6bff0e660c7120c85ce0a94924))
+
 ## [0.4.0](https://github.com/JonDotsoy/ondina/compare/client-v0.3.0...client-v0.4.0) (2024-11-25)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/JonDotsoy/ondina/compare/hub-v0.3.2...hub-v0.3.3) (2024-11-28)
+
+
+### Performance Improvements
+
+* **settings:** add suport to load yaml files ([b314e45](https://github.com/JonDotsoy/ondina/commit/b314e45ca4ab92337c624d2c935ca8f01f08e64c))
+
 ## [0.3.2](https://github.com/JonDotsoy/ondina/compare/hub-v0.3.1...hub-v0.3.2) (2024-11-25)
 
 
