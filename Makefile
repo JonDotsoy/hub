@@ -1,3 +1,5 @@
+PACKAGES=$(wildcard packages/*)
+
 .PHONY: fmt check test clean pack test %@packages/%
 
 check: ./node_modules
@@ -7,42 +9,22 @@ check: ./node_modules
 fmt: ./node_modules
 	bunx prettier -w .
 
-clean: clean@packages/hub clean@packages/dashboard
-	rm -rf node_modules
+# clean: clean@packages/hub clean@packages/dashboard
+# 	rm -rf node_modules
 
-pack: pack@packages/hub
+# pack: pack@packages/hub
 
-test: test@packages/hub
+test:
 
 ./node_modules:
 	bun i
 
-#############
-# dashboard
-#############
+%@packages/client: ./node_modules
+	make -C packages/client $*
 
-dev@packages/dashboard:
-	cd packages/dashboard && make dev
+%@packages/hub: ./node_modules
+	make -C packages/hub $*
 
-build@packages/dashboard:
-	cd packages/dashboard && make build
-
-clean@packages/dashboard:
-	cd packages/dashboard && make clean
-
-#############
-# hub
-#############
-
-clean@packages/hub:
-	cd packages/hub && make clean
-
-pack@packages/hub:
-	cd packages/hub && make pack
-
-dev@packages/hub:
-	cd packages/hub && make dev
-
-test@packages/hub:
-	cd packages/hub && bun test
+%@packages/dashboard: ./node_modules
+	make -C packages/dashboard $*
 

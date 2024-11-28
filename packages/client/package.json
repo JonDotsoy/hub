@@ -11,5 +11,8 @@
   },
   "bugs": {
     "url": "https://github.com/JonDotsoy/ondina/issues/new?title=client:"
+  },
+  "dependencies": {
+    "@jondotsoy/utils-js": "^0.5.2"
   }
 }
