@@ -1,0 +1,39 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"syntax = "proto3";
+
+service HubService {
+    rpc isAllowed (Body) returns (Validation) {}
+}
+
+message Body {
+    string principalId = 1;
+    optional string resourceJson = 2;
+    string action = 3;
+}
+
+message Validation {
+    bool allowed = 1;
+}
+"
+`;
+
+exports[`bootstrap serves the proto definitions 1`] = `
+"syntax = "proto3";
+
+service HubService {
+    rpc isAllowed (Body) returns (Validation) {}
+}
+
+message Body {
+    string principalId = 1;
+    optional string resourceJson = 2;
+    string action = 3;
+}
+
+message Validation {
+    bool allowed = 1;
+}
+"
+`;

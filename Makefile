@@ -9,12 +9,10 @@ check: ./node_modules
 fmt: ./node_modules
 	bunx prettier -w .
 
-# clean: clean@packages/hub clean@packages/dashboard
-# 	rm -rf node_modules
+clean: clean@packages/hub clean@packages/dashboard clean@packages/client
+	rm -rf node_modules
 
-# pack: pack@packages/hub
-
-test:
+test: test@packages/hub test@packages/client
 
 ./node_modules:
 	bun i

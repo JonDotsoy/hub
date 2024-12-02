@@ -1,4 +1,4 @@
-import { Router, params } from "artur";
+import { Router } from "artur";
 import { Hub } from "../hub/hub";
 import { settings } from "./settings";
 import * as YAML from "yaml";
@@ -6,12 +6,53 @@ import {
   DynamicContentResponse,
   dynamicContentMiddleware,
 } from "./utils/dynamic-content-response";
+import { protoGrpcType, serviceProto } from "./service-proto-server";
+import type { HubServiceHandlers } from "./protos/HubService";
+import type {
+  ServiceDefinition,
+  UntypedServiceImplementation,
+} from "@grpc/grpc-js";
 
 const openapi = new URL("./openapi.yml", import.meta.url);
+
+const protoText = await Bun.file(serviceProto).text();
+
+export type ProtoServiceDefinition = {
+  service: ServiceDefinition;
+  handlers: UntypedServiceImplementation;
+};
 
 export const bootstrap = async () => {
   const router = new Router();
   const hub = await Hub.from(settings.hubSchema);
+
+  const protoServiceDefinitions: ProtoServiceDefinition[] = [
+    {
+      service: protoGrpcType.HubService.service,
+      handlers: {
+        isAllowed: (call, callback) => {
+          hub
+            .isAllowed(call.request)
+            .then((allowed) => {
+              callback(null, { allowed });
+            })
+            .catch((err) => {
+              callback(err, null);
+            });
+        },
+      } satisfies HubServiceHandlers,
+    },
+  ];
+
+  router.use("GET", "/proto", {
+    fetch: (req) => {
+      return new Response(protoText, {
+        headers: {
+          "content-type": "application/protobuf",
+        },
+      });
+    },
+  });
 
   router.use("POST", "/is-allowed", {
     fetch: async (req) => {
@@ -70,5 +111,8 @@ export const bootstrap = async () => {
     },
   });
 
-  return router;
+  return {
+    httpRouter: router,
+    protoServiceDefinitions,
+  };
 };

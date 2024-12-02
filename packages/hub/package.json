@@ -37,6 +37,9 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.12.2",
+    "@grpc/proto-loader": "^0.7.13",
+    "@grpc/reflection": "^1.0.4",
     "@iarna/toml": "^2.2.5",
     "@jondotsoy/condition": "^0.2.2",
     "@jondotsoy/utils-js": "^0.5.2",

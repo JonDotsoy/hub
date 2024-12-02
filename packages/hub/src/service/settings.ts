@@ -72,6 +72,7 @@ export const loadSettings = async (
 ) => {
   return {
     port: getStringNumber(envs, "PORT") ?? 3000,
+    grpcPort: getStringNumber(envs, "PORT") ?? 3001,
     base: get.string(envs, "BASE") ?? "/",
     site: get.string(envs, "SITE"),
     hubSchema: await getHubSchema(envs, "MANIFEST_LOCATION"),
