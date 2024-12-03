@@ -1,5 +1,8 @@
 import { describe, it, expect, mock } from "bun:test";
 import { OndinaClient } from ".";
+import type { ProtoGrpcType } from "../protos/service";
+import type { HubServiceHandlers } from "../protos/HubService";
+import type { Validation__Output } from "../protos/Validation";
 
 const portState = {
   port: 13988,
@@ -27,6 +30,55 @@ class MockServer {
     return portState.port++;
   }
 }
+
+const useMockGrpcServer = async () => {
+  const mockIsAllowed = mock((): Validation__Output => ({ allowed: true }));
+
+  const grpc = await import("@grpc/grpc-js");
+  const grpcLoader = await import("@grpc/proto-loader");
+
+  const protoFile = new URL("../protos/service.proto", import.meta.url);
+
+  const packageDefinition = grpcLoader.loadSync(protoFile.pathname, {
+    longs: String,
+    enums: String,
+    defaults: true,
+    oneofs: true,
+  }) as any;
+
+  const protoGrpcType: ProtoGrpcType = grpc.loadPackageDefinition(
+    packageDefinition,
+  ) as any;
+
+  const serve = new grpc.Server();
+
+  serve.addService(protoGrpcType.HubService.service, {
+    isAllowed: (call, callback) => {
+      callback(null, mockIsAllowed());
+    },
+  } satisfies HubServiceHandlers);
+
+  const url = new URL("grpc://localhost:56887");
+
+  await new Promise<number>((resolve, reject) => {
+    serve.bindAsync(
+      url.host,
+      grpc.ServerCredentials.createInsecure(),
+      (err, port) => {
+        if (err) return reject(err);
+        resolve(port);
+      },
+    );
+  });
+
+  return {
+    mockIsAllowed,
+    url,
+    [Symbol.dispose]() {
+      serve.forceShutdown();
+    },
+  };
+};
 
 describe("OndinaClient", () => {
   it("should call the isAllowed endpoint", async () => {
@@ -127,5 +179,14 @@ describe("OndinaClient", () => {
     expect(
       ondinaClient.isAllowed({ principalId: "user", action: "read" }),
     ).rejects.toThrowError();
+  });
+
+  it("should work with grpc", async () => {
+    using g = await useMockGrpcServer();
+    const client = await OndinaClient.init({ dsn: g.url });
+
+    const res = await client.isAllowed({ principalId: "asd", action: "foo" });
+
+    expect(res).toBeTrue();
   });
 });
