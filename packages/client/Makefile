@@ -1,15 +1,17 @@
+TSC=bunx tsc
+
 .PHONY: build pack clean clean@protos
 
-clean:
+clean: clean@protos
 	rm -rf lib/esm
 
-build: protos/service.ts protos/service.proto.buff.ts
-	bunx tsc --project tsconfig.esm.json --outDir lib/esm
+build: protos/service.ts protos/service.protoobject.ts
+	${TSC} --project tsconfig.esm.json --outDir lib/esm
 
 pack: build
 	npm pack
 
-test:
+test: protos/service.ts protos/service.protoobject.ts
 	echo test
 
 clean@protos:

@@ -1,13 +1,14 @@
+PRETTIER=bunx prettier
+
 PACKAGES=$(wildcard packages/*)
 
 .PHONY: fmt check test clean pack test %@packages/%
 
-check: ./node_modules
-	bunx prettier --check .
-	bun test
+check: ./node_modules test
+	${PRETTIER} --check .
 
 fmt: ./node_modules
-	bunx prettier -w .
+	${PRETTIER} -w .
 
 clean: clean@packages/hub clean@packages/dashboard clean@packages/client
 	rm -rf node_modules
