@@ -1,8 +1,13 @@
+DOCKER_IMAGE=ondina-hub
+DOCKER_CLI=docker
+
 .PHONY: all dev build clean test test-* pack
 
 all: test
 
-build: hub-manifest.schema.* lib
+.PHONY: build-essential
+build-essential: hub-manifest.schema.* src/service/protos/service.ts
+build: build-essential lib
 
 clean: clean@src/service/protos/service.ts
 	rm -rf ./lib
@@ -33,3 +38,15 @@ lib: lib/esm
 
 lib/esm:
 	bunx tsc --project tsconfig.esm.json --outDir ./lib/esm
+
+.PHONY: serve
+serve: build-essential
+	bun src/service/service.ts
+
+.PHONY: build@docker
+build@docker:
+	${DOCKER_CLI} build -t ${DOCKER_IMAGE} .
+
+.PHONY: up@docker
+up@docker: build@docker
+	${DOCKER_CLI} run --rm -it -p 3000:3000 -p 3001:3001 ${DOCKER_IMAGE}

@@ -24,6 +24,9 @@ test: test@packages/hub test@packages/client
 %@packages/hub: ./node_modules
 	make -C packages/hub $*
 
+%@packages/demos:
+	make -C packages/demos $*
+
 %@packages/dashboard: ./node_modules
 	make -C packages/dashboard $*
 
