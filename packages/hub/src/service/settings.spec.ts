@@ -13,7 +13,7 @@ describe("loadSettings", () => {
       MANIFEST_LOCATION: manifestPath.pathname.toString(),
     });
 
-    expect(settings.hubSchema).toMatchSnapshot();
+    expect(settings.hubSchema?.get()).toMatchSnapshot();
   });
 
   it("loads settings from a JSON manifest", async () => {
@@ -26,6 +26,6 @@ describe("loadSettings", () => {
       MANIFEST_LOCATION: manifestPath.pathname.toString(),
     });
 
-    expect(settings.hubSchema).toMatchSnapshot();
+    expect(settings.hubSchema?.get()).toMatchSnapshot();
   });
 });
