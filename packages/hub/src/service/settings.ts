@@ -2,52 +2,103 @@ import { get } from "@jondotsoy/utils-js/get";
 import * as YAML from "yaml";
 import { atom, type ReadableAtom } from "nanostores";
 
+namespace MediaType {
+  export const parse = (mediaType: string) => {
+    const [mimeType, ...parametersStrings] = mediaType
+      .split(";")
+      .map((s) => s.trim());
+    if (!mimeType) return null;
+    const [type, subtype] = mimeType.split("/").map((s) => s.trim());
+    const parameters = parametersStrings
+      .map((parameterString) => parameterString.split("=").map((s) => s.trim()))
+      .reduce(
+        (acc, [name, value]) => {
+          return {
+            ...acc,
+            [name]: acc[name] ? [...acc[name], value] : value,
+          };
+        },
+        {} as Record<string, string | string[]>,
+      );
+
+    return {
+      mimeType,
+      type,
+      subtype,
+      parameters,
+    };
+  };
+
+  export const isJSON = (mediaType?: string): boolean =>
+    mediaType
+      ? parse(mediaType)?.mimeType.toLowerCase() === "application/json"
+      : false;
+  export const isYAML = (mediaType?: string): boolean =>
+    mediaType
+      ? parse(mediaType)?.mimeType.toLowerCase() === "application/yaml"
+      : false;
+}
+
+type ResourceDataAtom = ReadableAtom<{
+  contentType?: string;
+  body: string;
+}>;
+
 namespace loadHubSchema {
-  const downloadHttpAgent = async (
-    target: URL,
-  ): Promise<ReadableAtom<string>> => atom((await fetch(target)).text());
-  const downloadFileAgent = async (
-    target: URL,
-  ): Promise<ReadableAtom<string>> => atom(await Bun.file(target).text());
+  const downloadHttpAgent = async (target: URL): Promise<ResourceDataAtom> => {
+    const res = await fetch(target);
+    const text = await res.text();
+    return atom({
+      body: text,
+      contentType: res.headers.get("content-type"),
+    });
+  };
+
+  const downloadFileAgent = async (target: URL): Promise<ResourceDataAtom> =>
+    atom({ body: await Bun.file(target).text() });
 
   const downloadAgents: Record<
     string,
-    undefined | ((target: URL) => Promise<ReadableAtom<string>>)
+    undefined | ((target: URL) => Promise<ResourceDataAtom>)
   > = {
     "http:": downloadHttpAgent,
     "https:": downloadHttpAgent,
     "file:": downloadFileAgent,
   };
 
-  const parsers: Record<
-    string,
-    undefined | ((payload: ReadableAtom<string>) => ReadableAtom<any>)
-  > = {
-    ".yml": (stringReadable: ReadableAtom<string>) =>
-      atom(YAML.parse(stringReadable.get())),
-    ".yaml": (stringReadable: ReadableAtom<string>) =>
-      atom(YAML.parse(stringReadable.get())),
-    ".json": (stringReadable: ReadableAtom<string>) =>
-      atom(JSON.parse(stringReadable.get())),
-  };
+  const parsers: Array<{
+    test: (metadata: { target: string }, payload: ResourceDataAtom) => boolean;
+    parser: (payload: ResourceDataAtom) => ReadableAtom<any>;
+  }> = [
+    {
+      test: ({ target }, payload) =>
+        target.endsWith(".yml") ||
+        target.endsWith(".yaml") ||
+        MediaType.isYAML(payload.get().contentType),
+      parser: (stringReadable: ResourceDataAtom) =>
+        atom(YAML.parse(stringReadable.get().body)),
+    },
+    {
+      test: ({ target }, payload) =>
+        target.endsWith(".json") || MediaType.isJSON(payload.get().contentType),
+      parser: (stringReadable: ResourceDataAtom) =>
+        atom(JSON.parse(stringReadable.get().body)),
+    },
+  ];
 
   const downloadSources = (target: URL) => {
-    const agent = downloadAgents[target.protocol];
-    if (!agent) throw new Error(`Unsupported protocol ${target.protocol}`);
-    return agent(target);
+    const downloadAgent = downloadAgents[target.protocol];
+    if (!downloadAgent)
+      throw new Error(`Unsupported protocol ${target.protocol}`);
+    return downloadAgent(target);
   };
 
-  const parseSource = (target: URL, source: ReadableAtom<string>) => {
-    const getParse = () => {
-      for (const [name, parse] of Object.entries(parsers)) {
-        if (target.pathname.endsWith(name) && parse) return parse;
-      }
-      return null;
-    };
-
-    const parse = getParse();
-    if (!parse) throw new Error(`Unsupported extension ${target.pathname}`);
-    return parse(source);
+  const parseSource = (target: URL, source: ResourceDataAtom) => {
+    const parser =
+      parsers.find(({ test }) => test({ target: target.pathname }, source))
+        ?.parser ?? null;
+    if (!parser) throw new Error(`Unsupported extension ${target.pathname}`);
+    return parser(source);
   };
 
   export const load = async (target: string) => {
@@ -68,6 +119,7 @@ const getStringNumber = (obj: unknown, ...paths: PropertyKey[]) => {
 
 async function getHubSchemaState(obj: unknown, ...paths: PropertyKey[]) {
   const hubManifestLocation = get.string(obj, ...paths);
+
   if (hubManifestLocation) {
     return await loadHubSchema.load(hubManifestLocation);
   }
