@@ -45,7 +45,7 @@ async function useServer(
   };
 }
 
-describe.only("bootstrap", () => {
+describe("bootstrap", () => {
   it("serves the proto definitions", async () => {
     const { httpRouter, protoServiceDefinitions } = await bootstrap();
     using server = await useServer(httpRouter, protoServiceDefinitions);

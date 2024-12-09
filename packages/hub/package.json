@@ -43,7 +43,10 @@
     "@iarna/toml": "^2.2.5",
     "@jondotsoy/condition": "^0.2.2",
     "@jondotsoy/utils-js": "^0.5.2",
+    "@types/event-source-polyfill": "^1.0.5",
     "artur": "^1.2.1",
+    "event-source-polyfill": "^1.0.31",
+    "nanostores": "^0.11.3",
     "xml": "^1.0.1"
   },
   "files": [

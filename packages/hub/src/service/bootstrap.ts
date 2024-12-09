@@ -12,6 +12,8 @@ import type {
   ServiceDefinition,
   UntypedServiceImplementation,
 } from "@grpc/grpc-js";
+import { atom, type ReadableAtom } from "nanostores";
+import { hubBootstrap } from "./bootstraps/hub-bootstrap";
 
 const openapi = new URL("./openapi.yml", import.meta.url);
 
@@ -24,7 +26,8 @@ export type ProtoServiceDefinition = {
 
 export const bootstrap = async () => {
   const router = new Router();
-  const hub = await Hub.from(settings.hubSchema);
+
+  let hub = await hubBootstrap();
 
   const protoServiceDefinitions: ProtoServiceDefinition[] = [
     {
@@ -32,6 +35,7 @@ export const bootstrap = async () => {
       handlers: {
         isAllowed: (call, callback) => {
           hub
+            .get()
             .isAllowed(call.request)
             .then((allowed) => {
               callback(null, { allowed });
@@ -58,7 +62,7 @@ export const bootstrap = async () => {
     fetch: async (req) => {
       const body = await req.json();
 
-      const allowed = await hub.isAllowed({
+      const allowed = await hub.get().isAllowed({
         principalId: body.principalId,
         resource: body.resource,
         action: body.action,
@@ -107,11 +111,12 @@ export const bootstrap = async () => {
   router.use("GET", "/manifest", {
     middlewares: [dynamicContentMiddleware],
     fetch: async (req) => {
-      return new DynamicContentResponse(hub.toJSON());
+      return new DynamicContentResponse(hub.get().toJSON());
     },
   });
 
   return {
+    hub,
     httpRouter: router,
     protoServiceDefinitions,
   };
