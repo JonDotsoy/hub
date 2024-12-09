@@ -5,7 +5,7 @@ FROM base AS builder
 
 RUN apt update && apt install -y make
 COPY . .
-RUN apt install && make build-essential
+RUN bun install && make build-essential
 
 FROM base
 

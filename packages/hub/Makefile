@@ -48,3 +48,7 @@ lib/esm:
 .PHONY: serve
 serve: build-essential
 	bun src/service/service.ts
+
+.PHONY: build@docker
+build@docker:
+	${DOCKER_CLI} buildx build $(foreach image,$(DOCKER_IMAGE),-t ${image}) .
