@@ -15,7 +15,7 @@ for (const { service, handlers } of protoServiceDefinitions) {
 
 const grpcPort = await new Promise((resolve, reject) => {
   grpcServer.bindAsync(
-    `localhost:${settings.grpcPort}`,
+    `${settings.grpcHost}:${settings.grpcPort}`,
     grpc.ServerCredentials.createInsecure(),
     (err, port) => {
       if (err) return reject(err);
@@ -42,7 +42,7 @@ export const server = Bun.serve({
 console.log(
   `Server is ready on ${new URL(settings.base, settings.site ?? server.url)}`,
 );
-console.log(`GRPC Server is ready on ${`localhost:${settings.grpcPort}`}`);
+console.log(`GRPC Server is ready on ${`localhost:${grpcPort}`}`);
 
 for (const route of httpRouter.routes) {
   console.log(
