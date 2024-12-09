@@ -1,3 +1,0 @@
-.PHONY: start
-start:
-	
