@@ -1,29 +1,5 @@
 // Bun Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`loadSettings  1`] = `
-{
-  "permissions": [
-    "asd",
-  ],
-  "principals": [
-    {
-      "id": "asd",
-      "roles": [
-        "asd",
-      ],
-    },
-  ],
-  "roles": [
-    {
-      "id": "asd",
-      "permissions": [
-        "asd",
-      ],
-    },
-  ],
-}
-`;
-
 exports[`loadSettings loads settings from a YAML manifest 1`] = `
 {
   "permissions": [
@@ -151,6 +127,102 @@ exports[`loadSettings loads settings from a JSON manifest served by a mock serve
 `;
 
 exports[`loadSettings loads settings from a manifest served by a mock server without extension 1`] = `
+{
+  "permissions": [
+    "asd",
+  ],
+  "principals": [
+    {
+      "id": "asd",
+      "roles": [
+        "asd",
+      ],
+    },
+  ],
+  "roles": [
+    {
+      "id": "asd",
+      "permissions": [
+        "asd",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`loadSettings loads settings from a manifest served by a mock server with SSE: initial 1`] = `
+{
+  "permissions": [
+    "asd",
+  ],
+  "principals": [
+    {
+      "id": "asd",
+      "roles": [
+        "asd",
+      ],
+    },
+  ],
+  "roles": [
+    {
+      "id": "asd",
+      "permissions": [
+        "asd",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`loadSettings loads settings from a manifest served by a mock server with SSE: updated 1`] = `
+{
+  "permissions": [
+    "asd",
+  ],
+  "principals": [
+    {
+      "id": "asd",
+      "roles": [
+        "asd",
+      ],
+    },
+  ],
+  "roles": [
+    {
+      "id": "asd",
+      "permissions": [
+        "asd",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`loadSettings loads settings from a manifest served by a mock server with multiple SSE events: initial 1`] = `
+{
+  "permissions": [
+    "asd",
+  ],
+  "principals": [
+    {
+      "id": "asd",
+      "roles": [
+        "asd",
+      ],
+    },
+  ],
+  "roles": [
+    {
+      "id": "asd",
+      "permissions": [
+        "asd",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`loadSettings loads settings from a manifest served by a mock server with multiple SSE events: updated 1`] = `
 {
   "permissions": [
     "asd",

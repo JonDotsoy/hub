@@ -41,3 +41,11 @@ The following proposal outlines a potential feature and its expected timeline:
 -->
 
 ### Reflect Polices between hubs
+
+### Proposal: Pull policies from local and http services
+
+Allow MANIFEST_LOCATION with http or https address.
+
+**Allow EventSource to share refresh**
+
+during the first pull service, read the header `X-Content-Refresh` and open and [source event](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events).

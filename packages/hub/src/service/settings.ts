@@ -1,6 +1,9 @@
 import { get } from "@jondotsoy/utils-js/get";
 import * as YAML from "yaml";
 import { atom, type ReadableAtom } from "nanostores";
+import { NativeEventSource, EventSourcePolyfill } from "event-source-polyfill";
+
+const EventSource = NativeEventSource || EventSourcePolyfill;
 
 namespace MediaType {
   export const parse = (mediaType: string) => {
@@ -39,19 +42,81 @@ namespace MediaType {
       : false;
 }
 
-type ResourceDataAtom = ReadableAtom<{
+type ResourceData = {
   contentType?: string;
   body: string;
-}>;
+};
+
+type ResourceDataAtom = ReadableAtom<ResourceData>;
 
 namespace loadHubSchema {
   const downloadHttpAgent = async (target: URL): Promise<ResourceDataAtom> => {
-    const res = await fetch(target);
-    const text = await res.text();
-    return atom({
+    const disposeFunctions = new Set<() => any>();
+    const addDisposeFunction = (fn: () => any) => {
+      disposeFunctions.add(fn);
+    };
+
+    const pull = async () => {
+      const res = await fetch(target);
+      const text = await res.text();
+      return { res, text };
+    };
+
+    const { text, res } = await pull();
+
+    const resourceDataState = atom<ResourceData>({
       body: text,
-      contentType: res.headers.get("content-type"),
+      contentType: res.headers.get("content-type") ?? undefined,
     });
+
+    const xContentRefresh = res.headers.get("X-Content-Refresh")?.trim();
+
+    if (xContentRefresh && URL.canParse(xContentRefresh)) {
+      const loop = async () => {
+        let iterations = 0;
+        let res = Promise.withResolvers();
+        const eventSource = new EventSource(xContentRefresh);
+        addDisposeFunction(() => eventSource.close());
+        eventSource.addEventListener("refresh", () => {
+          res.resolve();
+        });
+        const r: AsyncIterable<any> = {
+          [Symbol.asyncIterator]() {
+            return {
+              next: async () => {
+                await res.promise;
+                res = Promise.withResolvers();
+                return {
+                  value: iterations++,
+                  done: false,
+                };
+              },
+            };
+          },
+        };
+        for await (const refresh of r) {
+          const { res, text } = await pull();
+          resourceDataState.set({
+            body: text,
+            contentType: res.headers.get("content-type") ?? undefined,
+          });
+        }
+      };
+      loop().catch(console.error);
+    }
+
+    const originalResourceDataStateDispose = get.function(
+      resourceDataState,
+      Symbol.dispose,
+    );
+    Reflect.set(resourceDataState, Symbol.dispose, () => {
+      originalResourceDataStateDispose?.();
+      for (const disposeFunction of disposeFunctions) {
+        disposeFunction();
+      }
+    });
+
+    return resourceDataState;
   };
 
   const downloadFileAgent = async (target: URL): Promise<ResourceDataAtom> =>
@@ -105,6 +170,11 @@ namespace loadHubSchema {
     const targetUrl = new URL(target, `file:${process.cwd()}/`);
     const source = await downloadSources(targetUrl);
     const data = parseSource(targetUrl, source);
+    const originalDispose = get.function(data, Symbol.dispose);
+    Reflect.set(data, Symbol.dispose, () => {
+      originalDispose?.();
+      get.function(source, Symbol.dispose)?.();
+    });
     return data;
   };
 }
@@ -130,12 +200,16 @@ async function getHubSchemaState(obj: unknown, ...paths: PropertyKey[]) {
 export const loadSettings = async (
   envs: Record<string, string | undefined> = process.env,
 ) => {
+  const hubSchema = await getHubSchemaState(envs, "MANIFEST_LOCATION");
   return {
     port: getStringNumber(envs, "PORT") ?? 3000,
     grpcPort: getStringNumber(envs, "PORT") ?? 3001,
     base: get.string(envs, "BASE") ?? "/",
     site: get.string(envs, "SITE"),
-    hubSchema: await getHubSchemaState(envs, "MANIFEST_LOCATION"),
+    hubSchema: hubSchema,
+    [Symbol.dispose]() {
+      get.function(hubSchema, Symbol.dispose)?.();
+    },
   };
 };
 
