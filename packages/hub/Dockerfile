@@ -12,7 +12,12 @@ FROM base
 COPY --from=builder /usr/share/ondina-hub /usr/share/ondina-hub
 RUN bun install
 
-EXPOSE 3000
-EXPOSE 3001
+ENV PORT=8080
+ENV GRPC_PORT=9090
+
+# HTTP service
+EXPOSE 8080
+# GRPC Service
+EXPOSE 9090
 
 CMD ["bun", "src/service/service.ts"]
