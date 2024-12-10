@@ -61,5 +61,8 @@
   },
   "bugs": {
     "url": "https://github.com/JonDotsoy/ondina/issues/new?title=hub:"
+  },
+  "dockerPublishConfig": {
+    "name": "jondotsoy/ondina-hub"
   }
 }

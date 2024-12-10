@@ -1,0 +1,25 @@
+services:
+  hub1:
+    build:
+      context: ../../hub
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+      - 9090:9090
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/share/app-workspace/
+    environment:
+      MANIFEST_LOCATION: /usr/share/app-workspace/polices.json
+  hub2:
+    build:
+      context: ../../hub
+      dockerfile: Dockerfile
+    ports:
+      - 8081:8080
+      - 9091:9090
+    links:
+      - hub1
+    environment:
+      MANIFEST_LOCATION: http://hub1:8080/manifest

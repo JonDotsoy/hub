@@ -40,6 +40,15 @@ jobs:
     with:
       working-directory: packages/hub
 
+  delivery-hub-docker:
+    uses: ./.github/workflows/delivery-docker-hub.yml
+    needs:
+      - release-please
+    if: needs.release-please.outputs.hub--release_created
+    secrets: inherit
+    with:
+      working-directory: packages/hub
+
   delivery-dashboard:
     uses: ./.github/workflows/delivery.yml
     needs:

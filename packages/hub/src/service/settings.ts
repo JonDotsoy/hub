@@ -202,8 +202,9 @@ export const loadSettings = async (
 ) => {
   const hubSchema = await getHubSchemaState(envs, "MANIFEST_LOCATION");
   return {
-    port: getStringNumber(envs, "PORT") ?? 3000,
-    grpcPort: getStringNumber(envs, "PORT") ?? 3001,
+    port: getStringNumber(envs, "PORT") ?? 7080,
+    grpcHost: getStringNumber(envs, "GRPC_HOST") ?? "0.0.0.0",
+    grpcPort: getStringNumber(envs, "GRPC_PORT") ?? 7090,
     base: get.string(envs, "BASE") ?? "/",
     site: get.string(envs, "SITE"),
     hubSchema: hubSchema,

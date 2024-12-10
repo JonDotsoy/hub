@@ -1,0 +1,50 @@
+name: Delivery Docker Hub
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        type: string
+        required: true
+
+jobs:
+  info:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    outputs:
+      pkg_name: ${{ steps.pkg_info.outputs.pkg_name }}
+      pkg_version: ${{ steps.pkg_info.outputs.pkg_version }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: pkg_info
+        run: |
+          cat package.json | jq '"pkg_name=" + .dockerPublishConfig.name + "\npkg_version=" + .version' -r > "$GITHUB_OUTPUT"
+
+  delivery:
+    needs:
+      - info
+    name: Delivery ${{ needs.info.outputs.pkg_name }}@${{ needs.info.outputs.pkg_version }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    environment:
+      name: docker/${{ needs.info.outputs.pkg_name }}
+      url: https://hub.docker.com/r/${{ needs.info.outputs.pkg_name }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ inputs.working-directory }}
+          push: true
+          tags: |
+            ${{ needs.info.outputs.pkg_name }}:${{ needs.info.outputs.pkg_version }},${{ needs.info.outputs.pkg_name }}:latest
