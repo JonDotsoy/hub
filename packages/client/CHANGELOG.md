@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.0](https://github.com/JonDotsoy/ondina/compare/client-v0.5.0...client-v0.6.0) (2024-12-10)
+
+
+### Features
+
+* **client:** add support to grpc ([1365b00](https://github.com/JonDotsoy/ondina/commit/1365b005778426e22e183e0df134cb573d85954e))
+* **hub:** add support to grpc ([96dc44f](https://github.com/JonDotsoy/ondina/commit/96dc44f47d9e6dfae9116362df15563c134bd28a))
+
+
+### Performance Improvements
+
+* remove unused protofiles ([f05b3f7](https://github.com/JonDotsoy/ondina/commit/f05b3f7b56a49b27d2588ea847ca733a661311ad))
+
 ## [0.5.0](https://github.com/JonDotsoy/ondina/compare/client-v0.4.0...client-v0.5.0) (2024-11-28)
 
 
