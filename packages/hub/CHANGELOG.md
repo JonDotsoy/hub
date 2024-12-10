@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.4.0](https://github.com/JonDotsoy/ondina/compare/hub-v0.3.3...hub-v0.4.0) (2024-12-10)
+
+
+### Features
+
+* add demo initialize 2 hubs ([ecb11b4](https://github.com/JonDotsoy/ondina/commit/ecb11b485fbaa9a4451e4f8120c2375a3e256299))
+* add support to dinamic hub schema ([6f17971](https://github.com/JonDotsoy/ondina/commit/6f1797154a729b4a75873d00d1cd9baac357f73e))
+* add support to event source subscrition ([7cc88f9](https://github.com/JonDotsoy/ondina/commit/7cc88f9a52df27023089ca3d39994e5e7b62b488))
+* add support to http fetching ([7554487](https://github.com/JonDotsoy/ondina/commit/755448770ed403bbd115c3104ed2f0fabe642323))
+* Dockerization of Service Hub ([#29](https://github.com/JonDotsoy/ondina/issues/29)) ([c0abc70](https://github.com/JonDotsoy/ondina/commit/c0abc702800e845a6bd1183f992056d829e175dd))
+* **hub:** add support to grpc ([96dc44f](https://github.com/JonDotsoy/ondina/commit/96dc44f47d9e6dfae9116362df15563c134bd28a))
+* Pull Policies from Local and HTTP Services with Live Updates ([#28](https://github.com/JonDotsoy/ondina/issues/28)) ([a7ec3ef](https://github.com/JonDotsoy/ondina/commit/a7ec3efff47d6c3f0fd110993a226aaefa14f310))
+* update port ([6daa5b5](https://github.com/JonDotsoy/ondina/commit/6daa5b51936d3a610171c451f8a291abc8e08f6d))
+* wip dockerizer ([b058631](https://github.com/JonDotsoy/ondina/commit/b05863107dae297fc5eec83298f8ea2859e5a1c2))
+
+
+### Bug Fixes
+
+* update envs names required ([02049b1](https://github.com/JonDotsoy/ondina/commit/02049b19f0647aeae6795124331669cdde922d21))
+
 ## [0.3.3](https://github.com/JonDotsoy/ondina/compare/hub-v0.3.2...hub-v0.3.3) (2024-11-28)
 
 
